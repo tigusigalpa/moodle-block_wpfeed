@@ -1,0 +1,19 @@
+.block_wpfeed_clear{
+    clear: both;
+}
+
+.block_wpfeed_list{
+    list-style-type: none;
+    margin-left: 0;
+}
+
+.block_wpfeed_list_item{
+    margin-bottom: 12px;
+}
+
+.block_wpfeed_thumbnail{
+    float: left;
+    margin: 0 10px 10px 0;
+    max-width: 150px;
+    overflow: hidden;
+}

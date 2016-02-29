@@ -16,6 +16,7 @@ You will be interested about the plugin if you have an external site (for custom
 4.	*(Download and)* install WPFeed on your Moodle as a block (via FTP - `/blocks/wpfeed` folder or via Moodle based plugins installer). Make sure to activate the plugin
 5.	Insert the block to your Moodle pages via edit mode
 6.	Go to block settings. **Administration -> Site administration -> Plugins -> Blocks -> WordPress Feed**. Lets talk more about settings:
+![WPFeed settings](https://i.imgsafe.org/f479260.png)
   - **Block title**: You can set your own title for a block, i.e. `My WordPress news`
   - **WordPress site URL**: Your WordPress external website URL, i.e. `http(s)://yoursite.com` **without slashes**
   - **WordPress REST API URI prefix**: WP REST API namespace (prefix). Default is `wp-json/wp/v2`. *You can customize prefix at WordPress functions.php*
@@ -36,6 +37,9 @@ You will be interested about the plugin if you have an external site (for custom
   - **Developer mode**: If you just start to tuning the plugin and got some problems there, you need to turn on this option to catch all of API data in request and response. It will helps to find possible errors and catch the ones. NOTE: works only with Moodle-based developer mode: **Administration -> Site administration -> Development -> Debugging**
 
 ## Skins
+
+![WPFeed skin](https://i.imgsafe.org/03e7639.png)
+
 Skin - output scheme of block posts list with own **PHP class, CSS and JS files**. The plugin has two base built-in skins located in `skins` folder:
 - **default**
 - **bootstrap**

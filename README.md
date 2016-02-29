@@ -2,6 +2,8 @@
 
 WPFeed is the block for Moodle to easy output posts/news from external WordPress site to your Moodle site via [WordPress REST API plugin v2](https://wordpress.org/plugins/rest-api/). The plugin (block) is very flexible: output skins supporting (you can create an own one), a lot of useful settings, response caching and so on.
 
+![WPFeed logo](https://i.imgsafe.org/67e742b.png)
+
 ## Getting Started
 
 You will be interested about the plugin if you have an external site (for customers or promoting your internal e-learning Moodle project) based on [WordPress CMS](https://wordpress.org/). Block settings enabled only for Moodle administrators.

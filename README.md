@@ -8,6 +8,8 @@ WPFeed is the block for Moodle to easy output posts/news from external WordPress
 
 You will be interested about the plugin if you have an external site (for customers or promoting your internal e-learning Moodle project) based on [WordPress CMS](https://wordpress.org/). Block settings enabled only for Moodle administrators.
 
+![WordPress REST API logo](https://i.imgsafe.org/71a74dd.png)
+
 1.	Install and activate [WordPress REST API plugin v2](https://wordpress.org/plugins/rest-api/) on your WordPress external site
 2.	Make sure it works. Visit `http(s)://yoursite.com/wp-json/wp/v2/posts`. It should to show JSON-based array with site posts
 3.	*(optional)* Customize your API namespace

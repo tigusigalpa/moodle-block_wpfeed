@@ -161,7 +161,7 @@ class block_wpfeed extends block_base {
      * WP_Query request filter posts array
      * 
      * @var    array
-     * @access proteced
+     * @access protected
      */
     protected $_filter = array();
     
@@ -542,7 +542,7 @@ class block_wpfeed extends block_base {
         $skin_name = $skin ? $skin : $this->skin;
         $dir = $this->abs_path . '/skins/' . $skin_name . '/' . $file;
         if ( !file_exists( $dir ) ) {
-            $dir = $this->external_skins_folder . '/' . $file;
+            $dir = $this->external_skins_folder . '/' . $skin_name . '/' . $file;
         }
         
         if ( file_exists( $dir ) && is_dir( $dir ) ) {

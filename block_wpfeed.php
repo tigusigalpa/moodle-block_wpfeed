@@ -540,16 +540,16 @@ class block_wpfeed extends block_base {
         }
         
         $skin_name = $skin ? $skin : $this->skin;
-        $dir = $this->abs_path . '/skins/' . $skin_name . '/' . $file;
+        $dir = $this->location . '/skins/' . $skin_name . '/' . $file;
         if ( !file_exists( $dir ) ) {
             $dir = $this->external_skins_folder . '/' . $skin_name . '/' . $file;
         }
         
         if ( file_exists( $dir ) && is_dir( $dir ) ) {
-            $css_files = glob( $dir . '/*.' . $file );
-            if ( !empty( $css_files ) && is_array( $css_files ) ) {
-                foreach ( $css_files as $css_file ) {
-                    $ret_array[] = str_ireplace( $this->abs_path, $this->http_path, $css_file );
+            $files = glob( $dir . '/*.' . $file );
+            if ( !empty( $files ) && is_array( $files ) ) {
+                foreach ( $files as $file ) {
+                    $ret_array[] = str_ireplace( $this->_cfg->dirroot, '', $file );
                 }
             }
         }

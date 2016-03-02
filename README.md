@@ -170,6 +170,9 @@ If you need to use custom JS files in your skin, you can require the ones:
 You're welcome for pull requests but against master branch. Thanks!
 
 ## Changelog
+#### Version 1.0.2 (2016030300)
+- custom skins frontend files require fix
+
 #### Version 1.0.1 (2016022900)
 - small fix with custom skins
 

@@ -25,9 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2016022900;
+$plugin->version   = 2016030300;
 $plugin->requires  = 2013111800;
 $plugin->cron      = 1;
 $plugin->component = 'block_wpfeed';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.0.1';
+$plugin->release   = '1.0.2';

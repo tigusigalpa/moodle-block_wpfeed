@@ -1,27 +1,27 @@
 # WordPress Feed (WPFeed) for Moodle
 
-WPFeed is the block for Moodle to easy output posts/news from external WordPress site to your Moodle site via [WordPress REST API plugin v2](https://wordpress.org/plugins/rest-api/). The plugin (block) is very flexible: output skins supporting (you can create an own one), a lot of useful settings, response caching and so on.
+WPFeed is the block for Moodle to easily output posts/news from external WordPress site to your Moodle site via [WordPress REST API plugin v2](https://wordpress.org/plugins/rest-api/). The plugin (block) is very flexible: supports output skins (you can create your own), a range of useful settings, response caching and so on.
 
 ![WPFeed logo](https://i.imgsafe.org/67e742b.png)
 
 ## Getting Started
 
-You will be interested about the plugin if you have an external site (for customers or promoting your internal e-learning Moodle project) based on [WordPress CMS](https://wordpress.org/). Block settings enabled only for Moodle administrators.
+This plugin will be of interest to if you if you have an external site (for customers or promoting your internal e-learning Moodle project) based on [WordPress CMS](https://wordpress.org/). Block settings enabled only for Moodle administrators.
 
 ![WordPress REST API logo](https://i.imgsafe.org/71a74dd.png)
 
 1.	Install and activate [WordPress REST API plugin v2](https://wordpress.org/plugins/rest-api/) on your WordPress external site
-2.	Make sure it works. Visit `http(s)://yoursite.com/wp-json/wp/v2/posts`. It should to show JSON-based array with site posts
+2.	Make sure it works. Visit `http(s)://yoursite.com/wp-json/wp/v2/posts`. It should show the JSON-based array with site posts
 3.	*(optional)* Customize your API namespace
 4.	*(Download and)* install WPFeed on your Moodle as a block (via FTP - `/blocks/wpfeed` folder or via Moodle based plugins installer). Make sure to activate the plugin
-5.	Insert the block to your Moodle pages via edit mode
+5.	Insert the block into your Moodle pages via edit mode
 6.	Go to block settings. **Administration -> Site administration -> Plugins -> Blocks -> WordPress Feed**. Lets talk more about settings:
 ![WPFeed settings](https://i.imgsafe.org/f479260.png)
   - **Block title**: You can set your own title for a block, i.e. `My WordPress news`
   - **WordPress site URL**: Your WordPress external website URL, i.e. `http(s)://yoursite.com` **without slashes**
-  - **WordPress REST API URI prefix**: WP REST API namespace (prefix). Default is `wp-json/wp/v2`. *You can customize prefix at WordPress functions.php*
+  - **WordPress REST API URI prefix**: WP REST API namespace (prefix). Default is `wp-json/wp/v2`. *You can customize the prefix in the WordPress functions.php*
   - **WordPress post type**: Post type to output (make request to). [WordPress supports several post types](https://codex.wordpress.org/Post_Types) and also custom post types. Default post type is `posts`. So if your site has custom post type, you can change this setting to the one.
-  - **Caching interval**: [(Moodle-based) cache](https://docs.moodle.org/28/en/Caching) update interval in MINUTES. It recommended to use caching to optimize and secure WordPress site. In development mode recommended to disable caching: `0 = no caching`.
+  - **Caching interval**: [(Moodle-based) cache](https://docs.moodle.org/28/en/Caching) update interval in MINUTES. It recommended to use caching to optimize and secure the WordPress site. In development mode it is recommended that you disable caching: `0 = no caching`.
   - **Store response in user session**: additional *(optional)* cache method to user Moodle-based `$SESSION` object
   - **WordPress posts categories id-s**: If you want to get posts from specified WordPress-based category id(s) separated by `,`
   - **Show posts thumbnails**: Option to enable/disable thumbnail show
@@ -34,7 +34,7 @@ You will be interested about the plugin if you have an external site (for custom
   - **Output skin**: Name of skin handler
   - **Open links/posts in new window/tab**: HTML link attribute `target="_blank"`
   - **Enable noindex**: `<noindex>` tag enable or not. Default is `no (disabled)`. Useful for SEO sometimes.
-  - **Developer mode**: If you just start to tuning the plugin and got some problems there, you need to turn on this option to catch all of API data in request and response. It will helps to find possible errors and catch the ones. NOTE: works only with Moodle-based developer mode: **Administration -> Site administration -> Development -> Debugging**
+  - **Developer mode**: If you encounter problems after tuning the plugin turn this option on to catch all of the API data in request and response. It helps to locate and catch possible errors. NOTE: works only with Moodle-based developer mode: **Administration -> Site administration -> Development -> Debugging**
 
 ## Skins
 
@@ -45,7 +45,7 @@ Skin - output scheme of block posts list with own **PHP class, CSS and JS files*
 - **bootstrap**
 
 ### Built-in CSS classes to customize output styles without custom skins
-General WPFeed elements in the block has general CSS classes, some elements has own CSS id. You can customize these styles just writing an external CSS code. Let's look at HTML structure of every WPFeed block content.
+General WPFeed elements in the block have general CSS classes, some elements have their own CSS id. You can customize these styles by writing an external CSS code. Let's look at HTML structure of every WPFeed block content.
 
 - **$SKIN_NAME**: output skin from block settings.
 - **$POST_ID**: current post id from API
@@ -72,17 +72,17 @@ General WPFeed elements in the block has general CSS classes, some elements has 
 </div>
 ```
 
-If you want to create an own skin with own HTML, CSS, JS - you're welcome, read next.
+If you want to create your own skin with HTML, CSS, JS - you're welcome, read next.
 
 ### Custom skins development
-If you want to create an own output, don't edit base skins files, create the one! WPFeed supports custom skins: it's very simple if you know PHP bases and HTML. **Simple steps to create an own skin**:
+If you want to create your own output, don't edit the base skins files, create a new one! WPFeed supports custom skins: it's very simple if you know PHP bases and HTML. **Simple steps to create an own skin**:
 
 #### 1. Create a new folder in your Moodle FTP directory named `wpfeed_skins`
-Go to your Moodle server/hosting via console or FTP to the folder where located folders like *admin, blocks etc* and create a new one named `wpfeed_skins`
-#### 2. Create subdirectory
-Choose your custom skin name, ie `myskin`. So you need to create subdirectory with path `wpfeed_skins/myskin`
-#### 3. Create PHP file with skin class extends to the base WPFeed skins PHP class `block_wpfeed_skins`
-Create PHP file in your skin folder named `SKINNAME_skin.php`, in your case is `myskin_skin.php`
+Go to your Moodle server/hosting via console or FTP to the folder where folders like *admin, blocks etc* are located and create a new one named `wpfeed_skins`
+#### 2. Create a subdirectory
+Once you’ve chosen your custom skin name, ie `myskin`, you need to create subdirectory with that path name, ie `wpfeed_skins/myskin`
+#### 3. Create a PHP file with skin class extends to the base WPFeed skins PHP class `block_wpfeed_skins`
+Create a PHP file in your skin folder named `SKINNAME_skin.php`, in your case is `myskin_skin.php`
 
 In this PHP file you need to create a PHP class extends from base WPFeed skins class `block_wpfeed_skins`. Code example:
 
@@ -151,7 +151,7 @@ protected function _item_wrapper_end() {
 }
 ```
 
-**NOTE**: It's highly recommended to use [Moodle based **html_writer** class](https://docs.moodle.org/dev/html_writer) to build HTML code strings.
+**NOTE**: It's highly recommended to that you use the [Moodle based **html_writer** class](https://docs.moodle.org/dev/html_writer) to build HTML code strings.
 
 #### 5. *(optional)* add custom CSS files
 If you need to use custom CSS files in your skin, you can require the ones:
@@ -167,7 +167,7 @@ If you need to use custom JS files in your skin, you can require the ones:
 2. Add JS files in this folder
 
 ## Contributing
-You're welcome for pull requests but against master branch. Thanks!
+You're welcome to make pull requests but against master branch. Thanks!
 
 ## Changelog
 #### Version 1.0.2 (2016030300)
@@ -184,4 +184,6 @@ You're welcome for pull requests but against master branch. Thanks!
 WPFeed is licensed under [GNU General Public License v2 (or later)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).
 
 ## Author
+Much thanks to [Douglas Lawrence](http://douglawrence.com/) for my English review!
+
 Copyright 2016, [Igor Sazonov](https://twitter.com/tigusigalpa) (sovletig@yandex.ru)

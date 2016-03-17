@@ -814,10 +814,10 @@ class block_wpfeed extends block_base{
         $retarray[] = html_writer::tag( 'strong',   get_string( 'block_wpfeed_api_url_title', 'block_wpfeed' ) ) . ':';
         $retarray[] = html_writer::tag( 'code',     html_writer::link( $apiurl, $apiurl, array( 'target' => '_blank' ) ) );
         $retarray[] = html_writer::tag( 'strong',   get_string( 'block_wpfeed_request_title', 'block_wpfeed' ) ) . ':';
-        $retarray[] = html_writer::tag( 'code',     print_r( $this->_filter, true ) );
+        $retarray[] = html_writer::tag( 'code',     self::block_wpfeed_pretty_print( $this->_filter ) );
         $retarray[] = html_writer::tag( 'strong',   get_string( 'block_wpfeed_response_title', 'block_wpfeed' ) ) . ':';
         if ( !empty( $this->_response ) && is_array( $this->_response ) ) {
-            $retarray[] = html_writer::tag( 'code', print_r( $this->_response, true ) );
+            $retarray[] = html_writer::tag( 'code', self::block_wpfeed_pretty_print( $this->_response ) );
         } else {
             $retarray[] = html_writer::tag( 'code', get_string( 'block_wpfeed_empty_response', 'block_wpfeed' ) );
         }
@@ -844,5 +844,40 @@ class block_wpfeed extends block_base{
         }
 
         return $data;
+    }
+
+    /**
+     * This function is a part of Dan Marsen (@link http://danmarsden.com/) code
+     * taken from his plugin "Urkund plagiarism plugin for Moodle 2.0"
+     * @link https://github.com/danmarsden/moodle-plagiarism_urkund
+     * The function make a pretty array output against print_r() function
+     *
+     * @static
+     * @link https://github.com/danmarsden
+     * @param type $data
+     * @access public
+     * @author Dan Marsen
+     * @return string HTML table with array data
+     */
+    public static function block_wpfeed_pretty_print( $arr ) {
+        if ( is_object( $arr ) ) {
+            $arr = (array) $arr;
+        }
+        $retstr = '<table class="generaltable">';
+        $retstr .= '<tr><th width="20%">Key</th><th width="80%">Value</th></tr>';
+        if ( is_array( $arr ) ) {
+            foreach ( $arr as $key => $val ) {
+                if ( is_object( $val ) ) {
+                    $val = (array) $val;
+                }
+                if ( is_array( $val ) ) {
+                    $retstr .= '<tr><td>' . $key . '</td><td>' . self::block_wpfeed_pretty_print( $val ) . '</td></tr>';
+                } else {
+                    $retstr .= '<tt><td>' . $key . '</td><td>' . ( $val == '' ? '""' : $val ) . '</td></tr>';
+                }
+            }
+        }
+        $retstr .= '</table>';
+        return $retstr;
     }
 }

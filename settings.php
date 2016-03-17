@@ -51,7 +51,7 @@ if ( $ADMIN->fulltree ) {
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_cache_interval',
                     get_string( 'block_wpfeed_settings_cache_interval', 'block_wpfeed' ),
             get_string( 'block_wpfeed_settings_cache_interval_desc', 'block_wpfeed', $staticconfigobj ),
-            $blockwpfeedinstance->staticConfig['default_cache_interval'],
+            $blockwpfeedinstance->staticconfig['default_cache_interval'],
             PARAM_INT ) );
 
     $settings->add(

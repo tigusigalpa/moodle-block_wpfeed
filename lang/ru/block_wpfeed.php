@@ -26,6 +26,8 @@ $string['pluginname']                                 = 'WordPress Feed';
 $string['wpfeed:addinstance']                         = 'Добавить новый блок WPFeed';
 $string['wpfeed:myaddinstance']                       = 'Добавить новый HTML block to the My Moodle page';
 
+$string['block_wpfeed_default_title']                 = 'Новости из WordPress';
+
 $string['block_wpfeed_update_cache']                  = 'Обновить кеш WPFeed';
 
 /*DEBUG*/

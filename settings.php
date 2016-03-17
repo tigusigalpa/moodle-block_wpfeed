@@ -25,7 +25,7 @@ if ( $ADMIN->fulltree ) {
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_title',
                     get_string( 'block_wpfeed_settings_title', 'block_wpfeed' ),
             '',
-            $blockwpfeedinstance->staticconfig['default_block_title'] ) );
+            get_string( 'block_wpfeed_default_title', 'block_wpfeed' ) ) );
 
 
     $settings->add(

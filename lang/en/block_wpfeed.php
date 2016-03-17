@@ -26,6 +26,8 @@ $string['pluginname']                                 = 'WordPress Feed';
 $string['wpfeed:addinstance']                         = 'Add a new WPFeed block';
 $string['wpfeed:myaddinstance']                       = 'Add a new simple HTML block to the My Moodle page';
 
+$string['block_wpfeed_default_title']                 = 'WordPress Feed';
+
 $string['block_wpfeed_update_cache']                  = 'WPFeed cache update';
 
 /*DEBUG*/

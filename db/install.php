@@ -25,7 +25,7 @@
 function xmldb_block_wpfeed_install() {
     $config = parse_ini_file( '../config.ini' );
 
-    set_config( 'block_wpfeed_title',           $config['default_block_title'],    'block_wpfeed' );
+    set_config( 'block_wpfeed_title',           get_string( 'block_wpfeed_default_title', 'block_wpfeed' ), 'block_wpfeed' );
     set_config( 'block_wpfeed_wp_url',          '',                                'block_wpfeed' );
     set_config( 'block_wpfeed_prefix',          $config['default_api_prefix'],     'block_wpfeed' );
     set_config( 'block_wpfeed_post_type',       $config['default_api_prefix'],     'block_wpfeed' );

@@ -1,12 +1,11 @@
 <?php
-
-defined('MOODLE_INTERNAL') || die();
+defined( 'MOODLE_INTERNAL' ) || die();
 
 class block_wpfeed_skin_bootstrap extends block_wpfeed_skins{
-    
+
     /**
      * Custom item wrapper start HTML code
-     * 
+     *
      * @since  1.0.0
      * @access protected
      * @return string
@@ -14,10 +13,10 @@ class block_wpfeed_skin_bootstrap extends block_wpfeed_skins{
     protected function _item_wrapper_start() {
         return html_writer::start_div( 'media' );
     }
-    
+
     /**
      * Custom item wrapper end HTML code
-     * 
+     *
      * @since  1.0.0
      * @access protected
      * @return string
@@ -25,10 +24,10 @@ class block_wpfeed_skin_bootstrap extends block_wpfeed_skins{
     protected function _item_wrapper_end() {
         return html_writer::end_div();
     }
-    
+
     /**
      * Get HTML-code of post thumbnail
-     * 
+     *
      * @since  1.0.0
      * @param  array $post Prepared post item array by @method _block_wpfeed_prepare_data
      * @param  boolean|int $link Make thumbnail as a link to the post or not
@@ -52,13 +51,13 @@ class block_wpfeed_skin_bootstrap extends block_wpfeed_skins{
                 $return .= html_writer::end_div();
             }
         }
-        
+
         return $return;
     }
-    
+
     /**
      * Skin post item output
-     * 
+     *
      * @since  1.0.0
      * @param  array $post Structured post data array
      * @access protected
@@ -71,8 +70,8 @@ class block_wpfeed_skin_bootstrap extends block_wpfeed_skins{
         $return .= html_writer::tag( 'h4', html_writer::link( $post['link'], $post['title'], $link_attrs ), array( 'class' => 'media-heading block_wpfeed_title block_wpfeed_title_' . $this->name ) );
         $return .= html_writer::tag( 'p', $post['excerpt_trimmed'] );
         $return .= html_writer::end_div();
-        
+
         return $return;
     }
-    
+
 }

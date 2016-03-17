@@ -23,13 +23,13 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined( 'MOODLE_INTERNAL' ) || die();
 
 $instance       = block_wpfeed::get_instance();
 $cache_interval = $instance->block_wpfeed_get_cache_interval();
 
 if ( $cache_interval > 0 ) {
-    
+
     $tasks = array(
         array(
             'classname' => '\block_wpfeed\task\update_cache_task',
@@ -41,5 +41,5 @@ if ( $cache_interval > 0 ) {
             'dayofweek' => '*'
         )
     );
-    
+
 }

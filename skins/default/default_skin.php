@@ -1,12 +1,11 @@
 <?php
-
-defined('MOODLE_INTERNAL') || die();
+defined( 'MOODLE_INTERNAL' ) || die();
 
 class block_wpfeed_skin_default extends block_wpfeed_skins{
-    
+
     /**
      * Skin post item output
-     * 
+     *
      * @since  1.0.0
      * @param  array $post Structured post data array
      * @access protected
@@ -18,8 +17,8 @@ class block_wpfeed_skin_default extends block_wpfeed_skins{
         $return .= html_writer::div( html_writer::link( $post['link'], $post['title'], $link_attrs ), 'block_wpfeed_title block_wpfeed_title_' . $this->name );
         $return .= html_writer::tag( 'small', $post['date_time'] );
         $return .= html_writer::tag( 'p', $post['excerpt_trimmed'] );
-        
+
         return $return;
     }
-    
+
 }

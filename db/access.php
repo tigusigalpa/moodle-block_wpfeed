@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined( 'MOODLE_INTERNAL' ) || die();
 
 $capabilities = array(
 
@@ -33,10 +33,10 @@ $capabilities = array(
         ,'archetypes'   => array(
             'user' => CAP_ALLOW
         )
-        
+
         ,'clonepermissionsfrom' => 'moodle/my:manageblocks'
     )
-    
+
     ,'block/wpfeed:addinstance' => array(
         'riskbitmask'   => RISK_SPAM | RISK_XSS
         ,'captype'      => 'write'
@@ -45,7 +45,7 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW
             ,'manager'       => CAP_ALLOW
         )
-        
+
         ,'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
 );

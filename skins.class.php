@@ -23,10 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined( 'MOODLE_INTERNAL' ) || die();
 
 abstract class block_wpfeed_skins{
-    
+
     /**
      * Skin name
      *
@@ -34,7 +34,7 @@ abstract class block_wpfeed_skins{
      * @var    string
      */
     public $name;
-    
+
     /**
      * WPFeed block class instance
      *
@@ -42,14 +42,14 @@ abstract class block_wpfeed_skins{
      * @var    object
      */
     private $_block_wpfeed;
-    
-    public function __construct(  ) {
-        
+
+    public function __construct() {
+
         $this->name          = $this->_block_wpfeed_skin_get_name();
         $this->_block_wpfeed = block_wpfeed::get_instance();
-        
+
     }
-    
+
     /**
      * Check for settings about thumbnail show
      *
@@ -60,7 +60,7 @@ abstract class block_wpfeed_skins{
     private function _thumbnail_show() {
         return $this->_block_wpfeed->block_wpfeed_thumbnail_show();
     }
-    
+
     /**
      * Check for settings about thumbnail link
      *
@@ -71,7 +71,7 @@ abstract class block_wpfeed_skins{
     private function _thumbnail_link() {
         return $this->_block_wpfeed->block_wpfeed_thumbnail_link();
     }
-    
+
     /**
      * Thumbnail width if admin specified
      *
@@ -82,7 +82,7 @@ abstract class block_wpfeed_skins{
     private function _thumbnail_width() {
         return $this->_block_wpfeed->block_wpfeed_thumbnail_width();
     }
-    
+
     /**
      * Check for settings about open links in a new window
      *
@@ -93,7 +93,7 @@ abstract class block_wpfeed_skins{
     private function _new_window() {
         return $this->_block_wpfeed->block_wpfeed_new_window();
     }
-    
+
     /**
      * Check for settings about noindex tag
      *
@@ -104,7 +104,7 @@ abstract class block_wpfeed_skins{
     private function _noindex() {
         return $this->_block_wpfeed->block_wpfeed_noindex();
     }
-    
+
     /**
      * Custom item wrapper start HTML code
      *
@@ -115,7 +115,7 @@ abstract class block_wpfeed_skins{
     protected function _item_wrapper_start() {
         return '';
     }
-    
+
     /**
      * Custom item wrapper end HTML code
      *
@@ -126,7 +126,7 @@ abstract class block_wpfeed_skins{
     protected function _item_wrapper_end() {
         return '';
     }
-    
+
     /**
      * Main HTML skin output for the WPFeed block
      *
@@ -138,7 +138,7 @@ abstract class block_wpfeed_skins{
     final public function skin_output( array $posts ) {
         $return = '';
         $errors = $this->_block_wpfeed->errors;
-        
+
         if ( empty( $posts ) ) {
             $return .= html_writer::start_tag( 'noindex' );
             if ( empty( $errors ) ) {
@@ -186,7 +186,7 @@ abstract class block_wpfeed_skins{
             }
             $return .= $this->_noindex() ? html_writer::end_tag( 'noindex' ) : '';
         }
-        
+
         if ( $this->_block_wpfeed->block_wpfeed_is_admin() ) {
             $return .= html_writer::start_tag( 'noindex' );
             $return .= html_writer::tag( 'strong', html_writer::link( new moodle_url( '/admin/settings.php', array( 'section' => 'blocksettingwpfeed' ) ), get_string( 'block_wpfeed_settings_url_title', 'block_wpfeed' ) . ' >>>' ) );
@@ -194,38 +194,38 @@ abstract class block_wpfeed_skins{
             $return .= html_writer::tag( 'em', get_string( 'block_wpfeed_clear_cache', 'block_wpfeed' ) . ' ' . html_writer::link( new moodle_url( '/admin/purgecaches.php' ), get_string( 'purgecaches', 'admin' ), array( 'style' => 'color:red' ) ) );
             $return .= html_writer::end_tag( 'noindex' );
         }
-        
+
         return $return;
     }
-    
+
     /**
      * Get HTML-code of post thumbnail
      *
      * @since  1.0.0
      * @param  array $post Prepared post item array by @method _block_wpfeed_prepare_data
      * @param  boolean|int $link Make thumbnail as a link to the post or not
-     * @param  array $linkAttrs Link attributes, ie target=_blank
-     * @param  array $img_attrs Image attributes, ie width=100
+     * @param  array $linkattrs Link attributes, ie target=_blank
+     * @param  array $imgattrs Image attributes, ie width=100
      * @access private
      * @return string HTML-code of thumbnail image
      */
-    private function _thumbnail( array $post, $link = true, $linkAttrs = array(), $imgAttrs = array() ) {
+    private function _thumbnail( array $post, $link = true, $linkattrs = array(), $imgattrs = array() ) {
         $return = '';
         if ( $this->_thumbnail_show() ) {
             if ( $post['thumbnail_url'] ) {
                 $return .= html_writer::start_div( 'block_wpfeed_thumbnail block_wpfeed_thumbnail_' . $this->name );
                 if ( $link ) {
-                    $return .= html_writer::link( $post['link'], html_writer::img( $post['thumbnail_url'], $post['title'], $imgAttrs ), $linkAttrs );
+                    $return .= html_writer::link( $post['link'], html_writer::img( $post['thumbnail_url'], $post['title'], $imgattrs ), $linkattrs );
                 } else {
-                    $return .= html_writer::img( $post['thumbnail_url'], $post['title'], $imgAttrs );
+                    $return .= html_writer::img( $post['thumbnail_url'], $post['title'], $imgattrs );
                 }
                 $return .= html_writer::end_div();
             }
         }
-        
+
         return $return;
     }
-    
+
     /**
      * Skin post item output
      *
@@ -236,7 +236,7 @@ abstract class block_wpfeed_skins{
      * @return string Post item output
      */
     abstract protected function _output_item( array $post );
-    
+
     /**
      * Get skin name by the class name
      *
@@ -245,10 +245,10 @@ abstract class block_wpfeed_skins{
      * @return string
      */
     private function _block_wpfeed_skin_get_name() {
-        $classNameArray = explode( '_' , get_called_class() );
-        return $classNameArray[ count( $classNameArray ) - 1 ];
+        $classnamearray = explode( '_' , get_called_class() );
+        return $classnamearray[ count( $classnamearray ) - 1 ];
     }
-    
+
     /**
      * Handle input post data array from WordPress REST API to structured array
      *
@@ -265,19 +265,19 @@ abstract class block_wpfeed_skins{
         $sticky          = $post['sticky'];
         $content         = $post['content']['rendered'];
         $excerpt         = $post['excerpt']['rendered'];
-        $excerptTrimmed  = self::trim_text( $content, $this->_block_wpfeed->block_wpfeed_get_excerpt_length() );
+        $excerpttrimmed  = self::trim_text( $content, $this->_block_wpfeed->block_wpfeed_get_excerpt_length() );
         $date            = $post['date'];
-        $dateTimeStr     = strtotime( $date );
-        $dateTime        = date( $this->_block_wpfeed->block_wpfeed_get_date_format(), $dateTimeStr );
-        $dateGmt         = $post['date_gmt'];
-        $dateGmtTime     = strtotime( $dateGmt );
-        $thumbnailSize   = $this->_block_wpfeed->block_wpfeed_get_thumbnail_size();
-        $thumbnailUrl    = ( !empty( $thumbnailSize ) && 
-                isset( $post['media'], $post['media']['media_details']['sizes'][$thumbnailSize] ) ) ? 
-                $post['media']['media_details']['sizes'][$thumbnailSize]['source_url'] : '';
+        $datetimestr     = strtotime( $date );
+        $dateTime        = date( $this->_block_wpfeed->block_wpfeed_get_date_format(), $datetimestr );
+        $dategmt         = $post['date_gmt'];
+        $dategmttime     = strtotime( $dategmt );
+        $thumbnailsize   = $this->_block_wpfeed->block_wpfeed_get_thumbnail_size();
+        $thumbnailurl    = ( !empty( $thumbnailsize ) && 
+                isset( $post['media'], $post['media']['media_details']['sizes'][$thumbnailsize] ) ) ?
+                $post['media']['media_details']['sizes'][$thumbnailsize]['source_url'] : '';
         $categories      = ( !empty( $post['wpf_cats'] ) && isset( $post['wpf_cats'] ) ) ? $post['wpf_cats'] : array();
         $comments        = ( !empty( $post['wpf_comments'] ) && isset( $post['wpf_comments'] ) ) ? $post['wpf_comments'] : array();
-        
+
         return array(
             'id'               => $id
             ,'type'            => $type
@@ -286,19 +286,19 @@ abstract class block_wpfeed_skins{
             ,'sticky'          => $sticky
             ,'content'         => $content
             ,'excerpt'         => $excerpt
-            ,'excerpt_trimmed' => $excerptTrimmed
+            ,'excerpt_trimmed' => $excerpttrimmed
             ,'date'            => $date
             ,'date_time'       => $dateTime
-            ,'date_time_str'   => $dateTimeStr
-            ,'date_gmt'        => $dateGmt
-            ,'date_gmt_time'   => $dateGmtTime
-            ,'thumbnail_url'   => $thumbnailUrl
+            ,'date_time_str'   => $datetimestr
+            ,'date_gmt'        => $dategmt
+            ,'date_gmt_time'   => $dategmttime
+            ,'thumbnail_url'   => $thumbnailurl
             ,'categories'      => $categories
             ,'comments'        => $comments
             ,'comments_count'  => count( $comments )
         );
     }
-    
+
     /**
      * Helper function to trim text to excerpt
      *
@@ -314,8 +314,8 @@ abstract class block_wpfeed_skins{
             $offset = ( $length - 3 ) - strlen( $text );
             return substr( $text, 0, strrpos( $text, ' ', $offset ) ) . '...';
         }
-        
+
         return $text;
     }
-    
+
 }

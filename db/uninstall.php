@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -25,7 +24,7 @@
 
 function xmldb_block_wpfeed_uninstall() {
     global $DB;
-    
+
     $DB->delete_records( 'config_plugins', array( 'plugin' => 'block_wpfeed' ) );
     $cache = \cache::make( 'block_wpfeed', 'cache' );
     $cache->delete( 'posts' );

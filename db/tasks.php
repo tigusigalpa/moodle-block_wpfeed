@@ -26,15 +26,15 @@
 defined( 'MOODLE_INTERNAL' ) || die();
 
 $instance       = block_wpfeed::get_instance();
-$cache_interval = $instance->block_wpfeed_get_cache_interval();
+$cacheinterval = $instance->block_wpfeed_get_cache_interval();
 
-if ( $cache_interval > 0 ) {
+if ( $cacheinterval > 0 ) {
 
     $tasks = array(
         array(
             'classname' => '\block_wpfeed\task\update_cache_task',
             'blocking'  => 0,
-            'minute'    => "*/{$cache_interval}",
+            'minute'    => "*/{$cacheinterval}",
             'hour'      => '*',
             'day'       => '*',
             'month'     => '*',

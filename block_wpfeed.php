@@ -192,9 +192,11 @@ class block_wpfeed extends block_base{
 
         $this->staticconfig   = $this->block_wpfeed_get_static_config();
         $this->_config        = get_config( 'block_wpfeed' );
-        $this->_api_namespace = !empty( $this->_config->block_wpfeed_prefix )?
-                $this->_config->block_wpfeed_prefix:
-                $this->staticconfig['default_api_prefix'];
+        if ( !empty( $this->_config->block_wpfeed_prefix ) ) {
+            $this->_api_namespace = $this->_config->block_wpfeed_prefix;
+        } else {
+            $this->_api_namespace = $this->staticconfig['default_api_prefix'];
+        }
         $this->_post_type     = $this->_block_wpfeed_get_post_type();
 
         $this->skin           = $this->_block_wpfeed_get_skin();
@@ -204,10 +206,11 @@ class block_wpfeed extends block_base{
         $this->_filter        = $this->_block_wpfeed_get_filter();
         $this->cache          = cache::make( 'block_wpfeed', 'cache' );
         $this->_posts         = $this->_block_wpfeed_get_posts();
-        $this->title          = ( isset( $this->_config->block_wpfeed_title ) &&
-                !empty( $this->_config->block_wpfeed_title ) ) ?
-                $this->_config->block_wpfeed_title :
-                $this->staticconfig['default_block_title'];
+        if ( isset( $this->_config->block_wpfeed_title ) && !empty( $this->_config->block_wpfeed_title ) ) {
+            $this->title = $this->_config->block_wpfeed_title;
+        } else {
+            $this->staticconfig['default_block_title'];
+        }
     }
 
     /**
@@ -289,7 +292,7 @@ class block_wpfeed extends block_base{
     public function block_wpfeed_get_thumbnail_size() {
         return $this->_config->block_wpfeed_thumbnail_size;
     }
-    
+
     /**
      * Check plugin settings about thumbnail link
      *
@@ -528,8 +531,8 @@ class block_wpfeed extends block_base{
                 $skinclassfile = $this->_block_wpfeed_get_skin_filepath( $skinname );
                 if ( $skinclassfile ) {
                     $retarray[] = array(
-                        'name'  => $skinname
-                        ,'file' => $skinclassfile
+                        'name'  => $skinname,
+                        'file' => $skinclassfile
                     );
                     if ( $names ) {
                         $namesarray[$skinname] = $skinname;
@@ -619,7 +622,7 @@ class block_wpfeed extends block_base{
      */
     protected function _block_wpfeed_get_wp_api_url( $id = false, $posttype = '' ) {
         $return = '';
-        if ( isset( $this->_config->block_wpfeed_wp_url ) && !empty( $this->_config->block_wpfeed_wp_url ) ) {
+        if ( !empty( $this->_config->block_wpfeed_wp_url ) ) {
             if ( empty( $posttype ) ) {
                 $posttype = $this->_post_type;
             }
@@ -656,7 +659,7 @@ class block_wpfeed extends block_base{
      * @return boolean|array WP API response array or false if error issets
      */
     public function block_wpfeed_posts_request( $id = false ) {
-        // Important to make here global instead $this->_cfg
+        // Important to make here global instead $this->_cfg.
         global $CFG;
         require_once( $CFG->libdir . '/filelib.php' );
 
@@ -804,13 +807,13 @@ class block_wpfeed extends block_base{
         $title = '<h5><u>' . get_string( 'block_wpfeed_debug_title', 'block_wpfeed' ) . ':</u></h5>';
 
         $apiurl     = $this->_block_wpfeed_get_wp_api_url();
-        $retarray[] = html_writer::tag( 'strong', get_string( 'block_wpfeed_api_url_title', 'block_wpfeed' ) ) . ':';
-        $retarray[] = html_writer::tag( 'code',   html_writer::link( $apiurl, $apiurl, array( 'target' => '_blank' ) ) );
-        $retarray[] = html_writer::tag( 'strong', get_string( 'block_wpfeed_request_title', 'block_wpfeed' ) ) . ':';
-        $retarray[] = html_writer::tag( 'code',   print_r( $this->_filter, true ) );
-        $retarray[] = html_writer::tag( 'strong', get_string( 'block_wpfeed_response_title', 'block_wpfeed' ) ) . ':';
+        $retarray[] = html_writer::tag( 'strong',   get_string( 'block_wpfeed_api_url_title', 'block_wpfeed' ) ) . ':';
+        $retarray[] = html_writer::tag( 'code',     html_writer::link( $apiurl, $apiurl, array( 'target' => '_blank' ) ) );
+        $retarray[] = html_writer::tag( 'strong',   get_string( 'block_wpfeed_request_title', 'block_wpfeed' ) ) . ':';
+        $retarray[] = html_writer::tag( 'code',     var_dump( $this->_filter ) );
+        $retarray[] = html_writer::tag( 'strong',   get_string( 'block_wpfeed_response_title', 'block_wpfeed' ) ) . ':';
         if ( !empty( $this->_response ) && is_array( $this->_response ) ) {
-            $retarray[] = html_writer::tag( 'code', print_r( $this->_response, true ) );
+            $retarray[] = html_writer::tag( 'code', var_dump( $this->_response ) );
         } else {
             $retarray[] = html_writer::tag( 'code', get_string( 'block_wpfeed_empty_response', 'block_wpfeed' ) );
         }

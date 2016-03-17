@@ -1,4 +1,19 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 defined( 'MOODLE_INTERNAL' ) || die();
 
 class block_wpfeed_skin_bootstrap extends block_wpfeed_skins{
@@ -44,7 +59,9 @@ class block_wpfeed_skin_bootstrap extends block_wpfeed_skins{
                 $imgattrs['class'] = 'media-object';
                 $return .= html_writer::start_div( 'media-left block_wpfeed_thumbnail block_wpfeed_thumbnail_' . $this->name );
                 if ( $link ) {
-                    $return .= html_writer::link( $post['link'], html_writer::img( $post['thumbnail_url'], $post['title'], $imgattrs ), $linkattrs );
+                    $return .= html_writer::link( $post['link'],
+                            html_writer::img( $post['thumbnail_url'],
+                                    $post['title'], $imgattrs ), $linkattrs );
                 } else {
                     $return .= html_writer::img( $post['thumbnail_url'], $post['title'], $imgattrs );
                 }

@@ -167,13 +167,13 @@ abstract class block_wpfeed_skins{
                 $return .= html_writer::start_tag( 'ul', array( 'class' => 'block_wpfeed_list' ) );
                 $linkattrs = $this->_new_window() ? array( 'target' => '_blank' ) : array();
                 $thumbnailwidth = $this->_thumbnail_width();
-                $img_attrs  = ( $thumbnailwidth > 0 ) ? array( 'width' => $thumbnailwidth ) : array();
+                $imgattrs  = ( $thumbnailwidth > 0 ) ? array( 'width' => $thumbnailwidth ) : array();
                 foreach($posts as $prepost):
                     $post    = $this->_block_wpfeed_prepare_data( $prepost );
                     $return .= html_writer::start_tag( 'li', array( 'id' => 'block_wpfeed_list_item_' . $post['id'], 'class' => 'block_wpfeed_list_item block_wpfeed_list_item_' . $skin ) );
                     $return .= html_writer::start_div( 'block_wpfeed_list_item_wrapper block_wpfeed_list_item_wrapper_' . $skin );
                     $return .= $this->_item_wrapper_start();
-                    $return .= $this->_thumbnail( $post, $this->_thumbnail_link(), $linkattrs, $img_attrs );
+                    $return .= $this->_thumbnail( $post, $this->_thumbnail_link(), $linkattrs, $imgattrs );
                     $return .= $this->_output_item( $post, $linkattrs );
                     $return .= $this->_item_wrapper_end();
                     $return .= html_writer::end_div();
@@ -279,9 +279,10 @@ abstract class block_wpfeed_skins{
         $dategmt         = $post['date_gmt'];
         $dategmttime     = strtotime( $dategmt );
         $thumbnailsize   = $this->_block_wpfeed->block_wpfeed_get_thumbnail_size();
-        $thumbnailurl    = ( !empty( $thumbnailsize ) && 
-                isset( $post['media'], $post['media']['media_details']['sizes'][$thumbnailsize] ) ) ?
-                $post['media']['media_details']['sizes'][$thumbnailsize]['source_url'] : '';
+        $thumbnailurl = '';
+        if ( !empty( $thumbnailsize ) && isset( $post['media'], $post['media']['media_details']['sizes'][$thumbnailsize] ) ) {
+            $thumbnailurl = $post['media']['media_details']['sizes'][$thumbnailsize]['source_url'];
+        }
         $categories      = ( !empty( $post['wpf_cats'] ) && isset( $post['wpf_cats'] ) ) ? $post['wpf_cats'] : array();
         $comments        = ( !empty( $post['wpf_comments'] ) && isset( $post['wpf_comments'] ) ) ? $post['wpf_comments'] : array();
 

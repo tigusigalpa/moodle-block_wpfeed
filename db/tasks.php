@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$instance       = block_wpfeed::getInstance();
+$instance       = block_wpfeed::get_instance();
 $cache_interval = $instance->block_wpfeed_get_cache_interval();
 
 if ( $cache_interval > 0 ) {

@@ -209,7 +209,7 @@ class block_wpfeed extends block_base{
         if ( isset( $this->_config->block_wpfeed_title ) && !empty( $this->_config->block_wpfeed_title ) ) {
             $this->title = $this->_config->block_wpfeed_title;
         } else {
-            $this->staticconfig['default_block_title'];
+            $this->title = $this->staticconfig['default_block_title'];
         }
     }
 
@@ -384,7 +384,7 @@ class block_wpfeed extends block_base{
         if ( isset( $this->_config->block_wpfeed_posts_limit ) && $this->_config->block_wpfeed_posts_limit > 0 ) {
             $postslimitpre = intval( $this->_config->block_wpfeed_posts_limit );
         } else {
-            $this->staticconfig['default_posts_limit'];
+            $postslimitpre = $this->staticconfig['default_posts_limit'];
         }
         $postslimit = ( $postslimitpre > 0 ) ? $postslimitpre : 5;
         $retarray = array(
@@ -854,7 +854,7 @@ class block_wpfeed extends block_base{
      *
      * @static
      * @link https://github.com/danmarsden
-     * @param type $data
+     * @param  array $arr Input data
      * @access public
      * @author Dan Marsen
      * @return string HTML table with array data

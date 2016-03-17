@@ -626,7 +626,7 @@ class block_wpfeed extends block_base{
             if ( empty( $posttype ) ) {
                 $posttype = $this->_post_type;
             }
-            $return = clean_param( trim( $this->_config->block_wpfeed_wp_url, '/' ), PARAM_URL ) . 
+            $return = clean_param( trim( $this->_config->block_wpfeed_wp_url, '/' ), PARAM_URL ) .
                     '/' . trim( $this->_api_namespace, '/' ) . '/' . $posttype;
 
             if ( !empty( $id ) ) {
@@ -791,7 +791,7 @@ class block_wpfeed extends block_base{
                 $this->_response['message'], $this->_response['data'], $this->_response['data']['status'] ) ) {
             $retarray[] = html_writer::tag( 'strong', get_string( 'block_wpfeed_error_string', 'block_wpfeed' ) ) . ':';
             $retarray[] = html_writer::tag( 'em',
-                    $this->_response['data']['status'] . ': ' . $this->_response['message'] . 
+                    $this->_response['data']['status'] . ': ' . $this->_response['message'] .
                     ' (' . $this->_response['code'] . ')' );
         }
 
@@ -814,10 +814,10 @@ class block_wpfeed extends block_base{
         $retarray[] = html_writer::tag( 'strong',   get_string( 'block_wpfeed_api_url_title', 'block_wpfeed' ) ) . ':';
         $retarray[] = html_writer::tag( 'code',     html_writer::link( $apiurl, $apiurl, array( 'target' => '_blank' ) ) );
         $retarray[] = html_writer::tag( 'strong',   get_string( 'block_wpfeed_request_title', 'block_wpfeed' ) ) . ':';
-        $retarray[] = html_writer::tag( 'code',     var_dump( $this->_filter ) );
+        $retarray[] = html_writer::tag( 'code',     print_r( $this->_filter, true ) );
         $retarray[] = html_writer::tag( 'strong',   get_string( 'block_wpfeed_response_title', 'block_wpfeed' ) ) . ':';
         if ( !empty( $this->_response ) && is_array( $this->_response ) ) {
-            $retarray[] = html_writer::tag( 'code', var_dump( $this->_response ) );
+            $retarray[] = html_writer::tag( 'code', print_r( $this->_response, true ) );
         } else {
             $retarray[] = html_writer::tag( 'code', get_string( 'block_wpfeed_empty_response', 'block_wpfeed' ) );
         }

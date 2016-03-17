@@ -192,8 +192,8 @@ class block_wpfeed extends block_base{
 
         $this->staticconfig   = $this->block_wpfeed_get_static_config();
         $this->_config        = get_config( 'block_wpfeed' );
-        $this->_api_namespace = !empty( $this->_config->block_wpfeed_prefix ) ? 
-                $this->_config->block_wpfeed_prefix : 
+        $this->_api_namespace = !empty( $this->_config->block_wpfeed_prefix )?
+                $this->_config->block_wpfeed_prefix:
                 $this->staticconfig['default_api_prefix'];
         $this->_post_type     = $this->_block_wpfeed_get_post_type();
 
@@ -232,7 +232,7 @@ class block_wpfeed extends block_base{
         if ( $this->_cfg->debugdeveloper == 1 && $this->block_wpfeed_is_admin() ) {
             return $this->_config->block_wpfeed_dev_mode;
         }
-        
+
         return false;
     }
 
@@ -249,7 +249,7 @@ class block_wpfeed extends block_base{
                 return $this->_config->block_wpfeed_cache_interval;
             }
         }
-        
+
         return 0;
     }
 
@@ -261,9 +261,11 @@ class block_wpfeed extends block_base{
      * @return string
      */
     private function _block_wpfeed_get_post_type() {
-        return !empty( $this->_config->block_wpfeed_post_type ) ?
-                $this->_config->block_wpfeed_post_type :
-                $this->staticconfig['default_post_type'];
+        if ( !empty( $this->_config->block_wpfeed_post_type ) ) {
+            return $this->_config->block_wpfeed_post_type;
+        }
+
+        return $this->staticconfig['default_post_type'];
     }
 
     /**
@@ -376,10 +378,11 @@ class block_wpfeed extends block_base{
      * @return array Filter array for API request
      */
     private function _block_wpfeed_get_filter() {
-        $postslimitpre = ( isset( $this->_config->block_wpfeed_posts_limit ) && 
-                $this->_config->block_wpfeed_posts_limit > 0 ) ? 
-                intval( $this->_config->block_wpfeed_posts_limit ) : 
-                $this->staticconfig['default_posts_limit'];
+        if ( isset( $this->_config->block_wpfeed_posts_limit ) && $this->_config->block_wpfeed_posts_limit > 0 ) {
+            $postslimitpre = intval( $this->_config->block_wpfeed_posts_limit );
+        } else {
+            $this->staticconfig['default_posts_limit'];
+        }
         $postslimit = ( $postslimitpre > 0 ) ? $postslimitpre : 5;
         $retarray = array(
             'filter' => array(
@@ -387,19 +390,22 @@ class block_wpfeed extends block_base{
             )
         );
 
-        $categories = ( isset( $this->_config->block_wpfeed_categories ) && 
-                !empty( $this->_config->block_wpfeed_categories ) ) ? 
-                $this->_config->block_wpfeed_categories : 0;
+        if ( isset( $this->_config->block_wpfeed_categories ) && !empty( $this->_config->block_wpfeed_categories ) ) {
+            $categories = $this->_config->block_wpfeed_categories;
+        } else {
+            $categories = 0;
+        }
+
         if ( !empty( $categories ) ) {
             $categoriesarray = explode( ',', $categories );
             if ( !empty( $categoriesarray ) && is_array( $categoriesarray ) ) {
                 $cats = array();
-                foreach ( $categoriesarray as $category ) {
+                foreach($categoriesarray as $category):
                     $cat = intval( $category );
                     if ( !empty( $cat ) ) {
                         $cats[] = $cat;
                     }
-                }
+                endforeach;
                 $retarray['filter']['cat'] = join( ',', $cats );
             }
         }
@@ -429,26 +435,26 @@ class block_wpfeed extends block_base{
 
                 $cssfiles = $this->_block_wpfeed_get_skin_frontend_files( 'css' );
                 if ( !empty( $cssfiles ) && is_array( $cssfiles ) ) {
-                    foreach ( $cssfiles as $cssfile ) {
+                    foreach($cssfiles as $cssfile):
                         $PAGE->requires->css( new moodle_url( $cssfile ) );
-                    }
+                    endforeach;
                 }
 
                 $jsfiles  = $this->_block_wpfeed_get_skin_frontend_files( 'js' );
                 if ( !empty( $jsfiles ) && is_array( $jsfiles ) ) {
-                    foreach ( $jsfiles as $jsfile ) {
+                    foreach($jsfiles as $jsfile):
                         $PAGE->requires->js( new moodle_url( $jsfile ) );
-                    }
+                    endforeach;
                 }
 
-                $skinObj = new $skinclassname;
-                $output  = $skinObj->skin_output( $this->_posts );
+                $skinobj = new $skinclassname;
+                $output  = $skinobj->skin_output( $this->_posts );
             }
         }
 
         $this->content       = new stdClass;
         $this->content->text = $output;
-        
+
         return $this->content;
     }
 
@@ -471,10 +477,11 @@ class block_wpfeed extends block_base{
      * @return string Current skin name
      */
     protected function _block_wpfeed_get_skin() {
-        return ( isset( $this->_config->block_wpfeed_skin ) &&
-                !empty( $this->_config->block_wpfeed_skin ) ) ?
-                    $this->_config->block_wpfeed_skin :
-                    $this->staticconfig['default_skin_name'];
+        if ( isset( $this->_config->block_wpfeed_skin ) && !empty( $this->_config->block_wpfeed_skin ) ) {
+            return $this->_config->block_wpfeed_skin;
+        }
+
+        return $this->staticconfig['default_skin_name'];
     }
 
     /**
@@ -491,7 +498,7 @@ class block_wpfeed extends block_base{
                 return $externalskinsfolders;
             }
         }
-        
+
         return false;
     }
 
@@ -513,7 +520,7 @@ class block_wpfeed extends block_base{
         }
 
         if ( !empty( $skinsfolders ) && is_array( $skinsfolders ) ) {
-            foreach ( $skinsfolders as $skinfolder ) {
+            foreach($skinsfolders as $skinfolder):
                 $skinname = str_ireplace( $this->abspath . '/skins/', '', $skinfolder );
                 if ( $skinname == $skinfolder && $this->externalskins ) {
                     $skinname = str_ireplace( $this->externalskinsfolder . '/', '', $skinfolder );
@@ -528,7 +535,7 @@ class block_wpfeed extends block_base{
                         $namesarray[$skinname] = $skinname;
                     }
                 }
-            }
+            endforeach;
             if ( $names ) {
                 return $namesarray;
             }
@@ -562,9 +569,9 @@ class block_wpfeed extends block_base{
         if ( file_exists( $dir ) && is_dir( $dir ) ) {
             $files = glob( $dir . '/*.' . $file );
             if ( !empty( $files ) && is_array( $files ) ) {
-                foreach ( $files as $file ) {
+                foreach($files as $file):
                     $retarray[] = str_ireplace( $this->_cfg->dirroot, '', $file );
-                }
+                endforeach;
             }
         }
 
@@ -649,7 +656,7 @@ class block_wpfeed extends block_base{
      * @return boolean|array WP API response array or false if error issets
      */
     public function block_wpfeed_posts_request( $id = false ) {
-        //!!!important to make here global instead $this->_cfg
+        // Important to make here global instead $this->_cfg
         global $CFG;
         require_once( $CFG->libdir . '/filelib.php' );
 
@@ -657,22 +664,22 @@ class block_wpfeed extends block_base{
         $curl->resetHeader();
 
         $retarray = array(
-            'posts'  => ''
-            ,'error' => ''
+            'posts'  => '',
+            'error' => ''
         );
 
         if ( $postsurl = $this->_block_wpfeed_get_wp_api_url( $id ) ) {
 
-            $postsResponse = $curl->get( $postsurl, $this->_filter );
+            $postsresponse = $curl->get( $postsurl, $this->_filter );
 
-            if ( $postsResponse ) {
-                $this->_response = json_decode( $postsResponse, true );
+            if ( $postsresponse ) {
+                $this->_response = json_decode( $postsresponse, true );
                 $error = $this->_block_wpfeed_errors_handler();
                 $retarray['error'] = $error;
                 $retarray['posts'] = $error ? array() : $this->_response;
 
                 if ( is_array( $retarray['posts'] ) && empty( $error ) ) {
-                    foreach ( $retarray['posts'] as $k => $post ) {
+                    foreach($retarray['posts'] as $k => $post):
                         if ( !empty( $this->_config->block_wpfeed_thumbnail_show ) ) {
                             $postmediaurl = $this->_block_wpfeed_get_wp_api_url( $post['id'], 'media' );
                             $postmediaresponse = $curl->get( $postmediaurl );
@@ -686,25 +693,25 @@ class block_wpfeed extends block_base{
                         $postcommentsresponse = $curl->get( $postcommentsurl );
                         $postcommentsarray = json_decode( $postcommentsresponse, true );
                         if ( !empty( $postcommentsarray ) && is_array( $postcommentsarray ) ) {
-                            foreach ( $postcommentsarray as $k2 => $postcomment ) {
+                            foreach($postcommentsarray as $k2 => $postcomment):
                                 $retarray['posts'][$k]['wpf_comments'][$k2]['id']   = $postcomment['id'];
                                 $retarray['posts'][$k]['wpf_comments'][$k2]['text'] = $postcomment['content']['rendered'];
-                            }
+                            endforeach;
                         }
 
                         $postcategoryurl = $this->_block_wpfeed_get_wp_api_url( $post['id'], 'categories' );
                         $postcategoryresponse = $curl->get( $postcategoryurl );
                         $postcategoryarray = json_decode( $postcategoryresponse, true );
                         if ( !empty( $postcategoryarray ) && is_array( $postcategoryarray ) ) {
-                            foreach ( $postcategoryarray as $k3 => $postcategory ) {
+                            foreach($postcategoryarray as $k3 => $postcategory):
                                 $retarray['posts'][$k]['wpf_cats'][$k3]['id']          = $postcategory['id'];
                                 $retarray['posts'][$k]['wpf_cats'][$k3]['name']        = $postcategory['name'];
                                 $retarray['posts'][$k]['wpf_cats'][$k3]['link']        = $postcategory['link'];
                                 $retarray['posts'][$k]['wpf_cats'][$k3]['slug']        = $postcategory['slug'];
                                 $retarray['posts'][$k]['wpf_cats'][$k3]['description'] = $postcategory['description'];
-                            }
+                            endforeach;
                         }
-                    }
+                    endforeach;
                 }
             }
         }
@@ -728,20 +735,23 @@ class block_wpfeed extends block_base{
             $error = json_decode( $this->cache->get( 'error' ), true );
         }
 
-        $sessionstore = isset( $this->_config->block_wpfeed_session_store ) ? intval( $this->_config->block_wpfeed_session_store ) : 0;
+        $sessionstore = 0;
+        if ( isset( $this->_config->block_wpfeed_session_store ) ) {
+            $sessionstore = intval( $this->_config->block_wpfeed_session_store );
+        }
         if ( !empty( $sessionstore ) && !empty( $this->_session->wpfeed_response_posts ) ) {
             $posts = json_decode( $this->_session->wpfeed_response_posts );
         }
 
         if ( empty( $posts ) && empty( $error ) ) {
-            $pre_posts = $this->block_wpfeed_posts_request();
-            $posts     = !empty( $pre_posts['posts'] ) ? self::block_wpfeed_object_to_array( $pre_posts['posts'] ) : array();
-            $error     = !empty( $pre_posts['error'] ) ? self::block_wpfeed_object_to_array( $pre_posts['error'] ) : array();
+            $preposts = $this->block_wpfeed_posts_request();
+            $posts     = !empty( $preposts['posts'] ) ? self::block_wpfeed_object_to_array( $preposts['posts'] ) : array();
+            $error     = !empty( $preposts['error'] ) ? self::block_wpfeed_object_to_array( $preposts['error'] ) : array();
             if ( !empty( $cacheinterval ) && ( !empty( $posts ) || !empty( $error ) ) ) {
                 $this->cache->set_many(
                     array(
-                        'posts'  => json_encode( $posts )
-                        ,'error' => json_encode( $error )
+                        'posts'  => json_encode( $posts ),
+                        'error' => json_encode( $error )
                     )
                 );
             }
@@ -793,9 +803,9 @@ class block_wpfeed extends block_base{
 
         $title = '<h5><u>' . get_string( 'block_wpfeed_debug_title', 'block_wpfeed' ) . ':</u></h5>';
 
-        $apiUrl     = $this->_block_wpfeed_get_wp_api_url();
+        $apiurl     = $this->_block_wpfeed_get_wp_api_url();
         $retarray[] = html_writer::tag( 'strong', get_string( 'block_wpfeed_api_url_title', 'block_wpfeed' ) ) . ':';
-        $retarray[] = html_writer::tag( 'code',   html_writer::link( $apiUrl, $apiUrl, array( 'target' => '_blank' ) ) );
+        $retarray[] = html_writer::tag( 'code',   html_writer::link( $apiurl, $apiurl, array( 'target' => '_blank' ) ) );
         $retarray[] = html_writer::tag( 'strong', get_string( 'block_wpfeed_request_title', 'block_wpfeed' ) ) . ':';
         $retarray[] = html_writer::tag( 'code',   print_r( $this->_filter, true ) );
         $retarray[] = html_writer::tag( 'strong', get_string( 'block_wpfeed_response_title', 'block_wpfeed' ) ) . ':';
@@ -819,9 +829,9 @@ class block_wpfeed extends block_base{
     public static function block_wpfeed_object_to_array( $data ) {
         if ( is_array( $data ) || is_object( $data ) ) {
             $result = array();
-            foreach ( $data as $key => $value ) {
+            foreach($data as $key => $value):
                 $result[$key] = self::block_wpfeed_object_to_array( $value );
-            }
+            endforeach;
 
             return $result;
         }

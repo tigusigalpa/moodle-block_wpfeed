@@ -169,7 +169,7 @@ abstract class block_wpfeed_skins{
                 $link_attrs = $this->_new_window() ? array( 'target' => '_blank' ) : array();
                 $_thumbnail_width = $this->_thumbnail_width();
                 $img_attrs  = ( $_thumbnail_width > 0 ) ? array( 'width' => $_thumbnail_width ) : array();
-                foreach ( $posts as $pre_post ) :
+                foreach($posts as $pre_post):
                     $post    = $this->_block_wpfeed_prepare_data( $pre_post );
                     $return .= html_writer::start_tag( 'li', array( 'id' => 'block_wpfeed_list_item_' . $post['id'], 'class' => 'block_wpfeed_list_item block_wpfeed_list_item_' . $skin ) );
                     $return .= html_writer::start_div( 'block_wpfeed_list_item_wrapper block_wpfeed_list_item_wrapper_' . $skin );

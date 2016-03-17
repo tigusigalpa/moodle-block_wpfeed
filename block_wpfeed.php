@@ -626,7 +626,8 @@ class block_wpfeed extends block_base{
             if ( empty( $posttype ) ) {
                 $posttype = $this->_post_type;
             }
-            $return = clean_param( trim( $this->_config->block_wpfeed_wp_url, '/' ), PARAM_URL ) . '/' . trim( $this->_api_namespace, '/' ) . '/' . $posttype;
+            $return = clean_param( trim( $this->_config->block_wpfeed_wp_url, '/' ), PARAM_URL ) . 
+                    '/' . trim( $this->_api_namespace, '/' ) . '/' . $posttype;
 
             if ( !empty( $id ) ) {
                 switch ( $posttype ) {
@@ -786,9 +787,12 @@ class block_wpfeed extends block_base{
      */
     protected function _block_wpfeed_errors_handler() {
         $retarray = array();
-        if ( !empty( $this->_response ) && is_array( $this->_response ) && isset( $this->_response['code'], $this->_response['message'], $this->_response['data'], $this->_response['data']['status'] ) ) {
+        if ( !empty( $this->_response ) && is_array( $this->_response ) && isset( $this->_response['code'],
+                $this->_response['message'], $this->_response['data'], $this->_response['data']['status'] ) ) {
             $retarray[] = html_writer::tag( 'strong', get_string( 'block_wpfeed_error_string', 'block_wpfeed' ) ) . ':';
-            $retarray[] = html_writer::tag( 'em', $this->_response['data']['status'] . ': ' . $this->_response['message'] . ' (' . $this->_response['code'] . ')' );
+            $retarray[] = html_writer::tag( 'em',
+                    $this->_response['data']['status'] . ': ' . $this->_response['message'] . 
+                    ' (' . $this->_response['code'] . ')' );
         }
 
         return join( '<br />', $retarray );

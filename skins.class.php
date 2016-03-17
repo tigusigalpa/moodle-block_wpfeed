@@ -170,7 +170,9 @@ abstract class block_wpfeed_skins{
                 $imgattrs  = ( $thumbnailwidth > 0 ) ? array( 'width' => $thumbnailwidth ) : array();
                 foreach($posts as $prepost):
                     $post    = $this->_block_wpfeed_prepare_data( $prepost );
-                    $return .= html_writer::start_tag( 'li', array( 'id' => 'block_wpfeed_list_item_' . $post['id'], 'class' => 'block_wpfeed_list_item block_wpfeed_list_item_' . $skin ) );
+                    $return .= html_writer::start_tag( 'li',
+                            array( 'id' => 'block_wpfeed_list_item_' . $post['id'],
+                                'class' => 'block_wpfeed_list_item block_wpfeed_list_item_' . $skin ) );
                     $return .= html_writer::start_div( 'block_wpfeed_list_item_wrapper block_wpfeed_list_item_wrapper_' . $skin );
                     $return .= $this->_item_wrapper_start();
                     $return .= $this->_thumbnail( $post, $this->_thumbnail_link(), $linkattrs, $imgattrs );
@@ -222,7 +224,9 @@ abstract class block_wpfeed_skins{
             if ( $post['thumbnail_url'] ) {
                 $return .= html_writer::start_div( 'block_wpfeed_thumbnail block_wpfeed_thumbnail_' . $this->name );
                 if ( $link ) {
-                    $return .= html_writer::link( $post['link'], html_writer::img( $post['thumbnail_url'], $post['title'], $imgattrs ), $linkattrs );
+                    $return .= html_writer::link( $post['link'],
+                            html_writer::img( $post['thumbnail_url'],
+                                    $post['title'], $imgattrs ), $linkattrs );
                 } else {
                     $return .= html_writer::img( $post['thumbnail_url'], $post['title'], $imgattrs );
                 }

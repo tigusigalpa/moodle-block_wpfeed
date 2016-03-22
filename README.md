@@ -11,7 +11,7 @@ This plugin will be of interest to if you if you have an external site (for cust
 ![WordPress REST API logos](http://i.imgsafe.org/08bdef2.jpg)
 
 1.	Install and activate [WordPress REST API plugin v1](https://ru.wordpress.org/plugins/json-rest-api/) (for WP v3.9 - 4.4.2) or [WordPress REST API plugin v2](https://wordpress.org/plugins/rest-api/) (for WP v4.4+) on your WordPress external site
-2.	Make sure it works. Visit `http(s)://yoursite.com/wp-json/posts` (API v2) or `http(s)://yoursite.com/wp-json/wp/v2/posts` (API v2). It should show the JSON-based array with site posts
+2.	Make sure it works. Visit `http(s)://yoursite.com/wp-json/posts` (API v1) or `http(s)://yoursite.com/wp-json/wp/v2/posts` (API v2). It should show the JSON-based array with site posts
 3.	*(optional)* Customize your API namespace
 4.	*(Download and)* install WPFeed on your Moodle as a block (via FTP - `/blocks/wpfeed` folder or via Moodle based plugins installer). Make sure to activate the plugin
 5.	Insert the block into your Moodle pages via edit mode

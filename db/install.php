@@ -32,7 +32,7 @@ function xmldb_block_wpfeed_install() {
     set_config( 'block_wpfeed_api_version',     $config['default_api_version'],    'block_wpfeed' );
     set_config( 'block_wpfeed_prefix',          $config['default_api_prefix_v2'],  'block_wpfeed' );
     set_config( 'block_wpfeed_post_type',       $config['default_post_type'],      'block_wpfeed' );
-    set_config( 'block_wpfeed_cache_interval',  $config['default_post_type'],      'block_wpfeed' );
+    set_config( 'block_wpfeed_cache_interval',  $config['default_cache_interval'], 'block_wpfeed' );
     set_config( 'block_wpfeed_session_store',   $config['default_session_store'],  'block_wpfeed' );
 
     set_config( 'block_wpfeed_categories',      0,                                 'block_wpfeed' );

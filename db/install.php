@@ -23,12 +23,15 @@
  */
 
 function xmldb_block_wpfeed_install() {
-    $config = parse_ini_file( '../config.ini' );
+    global $CFG;
+
+    $config = parse_ini_file( $CFG->dirroot . '/blocks/wpfeed/config.ini' );
 
     set_config( 'block_wpfeed_title',           get_string( 'block_wpfeed_default_title', 'block_wpfeed' ), 'block_wpfeed' );
     set_config( 'block_wpfeed_wp_url',          '',                                'block_wpfeed' );
-    set_config( 'block_wpfeed_prefix',          $config['default_api_prefix'],     'block_wpfeed' );
-    set_config( 'block_wpfeed_post_type',       $config['default_api_prefix'],     'block_wpfeed' );
+    set_config( 'block_wpfeed_api_version',     $config['default_api_version'],    'block_wpfeed' );
+    set_config( 'block_wpfeed_prefix',          $config['default_api_prefix_v2'],  'block_wpfeed' );
+    set_config( 'block_wpfeed_post_type',       $config['default_post_type'],      'block_wpfeed' );
     set_config( 'block_wpfeed_cache_interval',  $config['default_post_type'],      'block_wpfeed' );
     set_config( 'block_wpfeed_session_store',   $config['default_session_store'],  'block_wpfeed' );
 

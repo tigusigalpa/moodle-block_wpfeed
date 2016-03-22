@@ -47,8 +47,10 @@ $string['block_wpfeed_no_posts']                      = 'No posts in API respons
 $string['block_wpfeed_settings_title']                = 'Block title';
 $string['block_wpfeed_settings_wp_url']               = 'WordPress site URL';
 $string['block_wpfeed_settings_wp_url_desc']          = 'Your WordPress site URL address <strong>without slashes</strong>. Example: <em>http://mysite.com</em>';
+$string['block_wpfeed_api_version']                   = 'Your WordPress site API version';
+$string['block_wpfeed_api_version_desc']              = 'WP API <strong>version 1</strong> plugin repository URL: <a href="https://wordpress.org/plugins/json-rest-api/" target="_blank">https://wordpress.org/plugins/json-rest-api/</a> (<em>for WP versions 3.9&ndash;4.4.2</em>)<br />WP API <strong>version 2</strong> plugin repository URL: <a href="https://wordpress.org/plugins/rest-api/" target="_blank">https://wordpress.org/plugins/rest-api/</a> (<em>for WP versions 4.4+</em>)';
 $string['block_wpfeed_settings_wp_api_prefix']        = 'WordPress REST API URI prefix';
-$string['block_wpfeed_settings_wp_api_prefix_desc']   = 'Prefix after site URL for requests <strong>without slashes</strong>.<br />Default prefix for API v2: <strong>{$a->default_api_prefix}</strong><br />Request API URL at result will be like <strong>http://yoursite.com/wp-json/wp/v2</strong>';
+$string['block_wpfeed_settings_wp_api_prefix_desc']   = 'Prefix after site URL for requests <strong>without slashes</strong>.<br />Default prefix for API v1: <strong>{$a->default_api_prefix_v1}</strong><br />Default prefix for API v2: <strong>{$a->default_api_prefix_v2}</strong><br />Request API URL at result will be like <strong>http://yoursite.com/{$a->default_api_prefix_v1}</strong> or <strong>http://yoursite.com/{$a->default_api_prefix_v2}</strong>';
 $string['block_wpfeed_settings_post_type']            = 'WordPress post type';
 $string['block_wpfeed_settings_post_type_desc']       = 'Needle Post type of your WordPress site. Default is <strong>{$a->default_post_type}</strong>';
 $string['block_wpfeed_settings_cache_interval']       = 'Caching interval';

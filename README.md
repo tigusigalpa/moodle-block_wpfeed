@@ -1,6 +1,6 @@
 # WordPress Feed (WPFeed) for Moodle
 
-WPFeed is the block for Moodle to easily output posts/news from external WordPress site to your Moodle site via [WordPress REST API plugin v2](https://wordpress.org/plugins/rest-api/). The plugin (block) is very flexible: supports output skins (you can create your own), a range of useful settings, response caching and so on.
+WPFeed is the block for Moodle to easily output posts/news from external WordPress site to your Moodle site via [WordPress REST API plugin v1](https://ru.wordpress.org/plugins/json-rest-api/) or [WordPress REST API plugin v2](https://wordpress.org/plugins/rest-api/). The plugin (block) is very flexible: supports output skins (you can create your own), a range of useful settings, response caching and so on.
 
 ![WPFeed logo](https://i.imgsafe.org/67e742b.png)
 
@@ -8,17 +8,18 @@ WPFeed is the block for Moodle to easily output posts/news from external WordPre
 
 This plugin will be of interest to if you if you have an external site (for customers or promoting your internal e-learning Moodle project) based on [WordPress CMS](https://wordpress.org/). Block settings enabled only for Moodle administrators.
 
-![WordPress REST API logo](https://i.imgsafe.org/71a74dd.png)
+![WordPress REST API logos](http://i.imgsafe.org/08bdef2.jpg)
 
-1.	Install and activate [WordPress REST API plugin v2](https://wordpress.org/plugins/rest-api/) on your WordPress external site
-2.	Make sure it works. Visit `http(s)://yoursite.com/wp-json/wp/v2/posts`. It should show the JSON-based array with site posts
+1.	Install and activate [WordPress REST API plugin v1](https://ru.wordpress.org/plugins/json-rest-api/) (for WP v3.9 - 4.4.2) or [WordPress REST API plugin v2](https://wordpress.org/plugins/rest-api/) (for WP v4.4+) on your WordPress external site
+2.	Make sure it works. Visit `http(s)://yoursite.com/wp-json/posts` (API v2) or `http(s)://yoursite.com/wp-json/wp/v2/posts` (API v2). It should show the JSON-based array with site posts
 3.	*(optional)* Customize your API namespace
 4.	*(Download and)* install WPFeed on your Moodle as a block (via FTP - `/blocks/wpfeed` folder or via Moodle based plugins installer). Make sure to activate the plugin
 5.	Insert the block into your Moodle pages via edit mode
 6.	Go to block settings. **Administration -> Site administration -> Plugins -> Blocks -> WordPress Feed**. Lets talk more about settings:
-![WPFeed settings](https://i.imgsafe.org/f479260.png)
+![WPFeed settings](http://i.imgsafe.org/3846928.jpg)
   - **Block title**: You can set your own title for a block, i.e. `My WordPress news`
   - **WordPress site URL**: Your WordPress external website URL, i.e. `http(s)://yoursite.com` **without slashes**
+  - **Your WordPress site API version**: Your WordPress aite API plugin version (`v1` or `v2`). Default is `v2`
   - **WordPress REST API URI prefix**: WP REST API namespace (prefix). Default is `wp-json/wp/v2`. *You can customize the prefix in the WordPress functions.php*
   - **WordPress post type**: Post type to output (make request to). [WordPress supports several post types](https://codex.wordpress.org/Post_Types) and also custom post types. Default post type is `posts`. So if your site has custom post type, you can change this setting to the one.
   - **Caching interval**: [(Moodle-based) cache](https://docs.moodle.org/28/en/Caching) update interval in MINUTES. It recommended to use caching to optimize and secure the WordPress site. In development mode it is recommended that you disable caching: `0 = no caching`.
@@ -41,8 +42,8 @@ This plugin will be of interest to if you if you have an external site (for cust
 ![WPFeed skin](https://i.imgsafe.org/03e7639.png)
 
 Skin - output scheme of block posts list with own **PHP class, CSS and JS files**. The plugin has two base built-in skins located in `skins` folder:
-- **default**
-- **bootstrap**
+- `default`
+- `bootstrap`
 
 ### Built-in CSS classes to customize output styles without custom skins
 General WPFeed elements in the block have general CSS classes, some elements have their own CSS id. You can customize these styles by writing an external CSS code. Let's look at HTML structure of every WPFeed block content.
@@ -170,6 +171,11 @@ If you need to use custom JS files in your skin, you can require the ones:
 You're welcome to make pull requests but against master branch. Thanks!
 
 ## Changelog
+#### Version 1.1.0 (2016032200)
+- Moodle Travis code requirements compliable (>90%)
+- WordPress API v1 support (thanks for [Dan Marsen](https://github.com/danmarsden) issue)
+- Some small fixes
+
 #### Version 1.0.2 (2016030300)
 - custom skins frontend files require fix
 

@@ -93,6 +93,14 @@ class block_wpfeed extends block_base{
     private $_config;
 
     /**
+     * Plugin API version
+     *
+     * @var    string
+     * @access private
+     */
+    private $_api_version;
+
+    /**
      * WordPress API prefix for request URL
      *
      * @var    string
@@ -172,6 +180,11 @@ class block_wpfeed extends block_base{
      */
     private $_response;
 
+    public static $blockwpfeedapiversions = array(
+        'v1' => 'v1',
+        'v2' => 'v2'
+    );
+
     /**
      * Singleton object
      *
@@ -192,10 +205,15 @@ class block_wpfeed extends block_base{
 
         $this->staticconfig   = $this->block_wpfeed_get_static_config();
         $this->_config        = get_config( 'block_wpfeed' );
+        if ( !empty( $this->_config->block_wpfeed_api_version ) ) {
+            $this->_api_version = $this->_config->block_wpfeed_api_version;
+        } else {
+            $this->_api_version = $this->staticconfig['default_api_version'];
+        }
         if ( !empty( $this->_config->block_wpfeed_prefix ) ) {
             $this->_api_namespace = $this->_config->block_wpfeed_prefix;
         } else {
-            $this->_api_namespace = $this->staticconfig['default_api_prefix'];
+            $this->_api_namespace = $this->staticconfig['default_api_prefix_v2'];
         }
         $this->_post_type     = $this->_block_wpfeed_get_post_type();
 
@@ -626,27 +644,182 @@ class block_wpfeed extends block_base{
             if ( empty( $posttype ) ) {
                 $posttype = $this->_post_type;
             }
-            $return = clean_param( trim( $this->_config->block_wpfeed_wp_url, '/' ), PARAM_URL ) .
-                    '/' . trim( $this->_api_namespace, '/' ) . '/' . $posttype;
-
-            if ( !empty( $id ) ) {
-                switch ( $posttype ) {
-                    case 'media':
-                        $return .= '?parent=' . $id;
-                        break;
-                    case 'comments':
-                    case 'categories':
-                        $return .= '?post=' . $id;
-                        break;
-                    case 'posts':
-                    default:
+            switch ( $this->_api_version ) {
+                case 'v1':
+                    $return = clean_param( trim( $this->_config->block_wpfeed_wp_url, '/' ), PARAM_URL ) .
+                            '/' . trim( $this->_api_namespace, '/' ) . '/' . trim( $this->_block_wpfeed_get_post_type(), '/' );
+                    if ( !empty( $id ) ) {
                         $return .= '/' . $id;
-                        break;
-                }
+                    }
+                    switch ( $posttype ) {
+                        case 'comments':
+                            $return .= '/comments';
+                            break;
+                    }
+                    break;
+                case 'v2':
+                    $return = clean_param( trim( $this->_config->block_wpfeed_wp_url, '/' ), PARAM_URL ) .
+                            '/' . trim( $this->_api_namespace, '/' ) . '/' . $posttype;
+
+                    if ( !empty( $id ) ) {
+                        switch ( $posttype ) {
+                            case 'media':
+                                $return .= '?parent=' . $id;
+                                break;
+                            case 'comments':
+                            case 'categories':
+                                $return .= '?post=' . $id;
+                                break;
+                            case 'posts':
+                            default:
+                                $return .= '/' . $id;
+                                break;
+                        }
+                    }
+                    break;
             }
         }
 
         return $return;
+    }
+
+    /**
+     * Prepare post array keys by API version
+     *
+     * @since  1.1.0
+     * @param  array $post Post data array from API
+     * @access public
+     * @return array Prepared post array by API version
+     */
+    public function block_wpfeed_prepare_post_response( array $post ) {
+        switch ( $this->_api_version ) {
+            case 'v1':
+                $post['id'] = $post['ID'];
+                break;
+            case 'v2':
+                $post['title'] = $post['title']['rendered'];
+                $post['content'] = $post['content']['rendered'];
+                $post['excerpt'] = $post['excerpt']['rendered'];
+                break;
+        }
+
+        return $post;
+    }
+
+    /**
+     * This function get post thumbnail URL from API
+     *
+     * @since  1.1.0
+     * @param  curl  $curl cURL object
+     * @param  array $post Post data array from API
+     * @access private
+     * @return string Post thumbnail URL
+     */
+    private function _block_wpfeed_get_post_thumbnail( curl $curl, $post = array() ) {
+        $ret = '';
+
+        $thumbnailsize = $this->block_wpfeed_get_thumbnail_size();
+        if ( !empty( $thumbnailsize ) ) {
+            switch ( $this->_api_version ) {
+                case 'v1':
+                    if ( !empty( $post ) && is_array( $post ) && isset( $post['featured_image'] ) ) {
+                        $ret = $post['featured_image']['attachment_meta']['sizes'][$thumbnailsize]['url'];
+                    }
+                    break;
+                case 'v2':
+                    if ( isset( $post['id'] ) && !empty( $post['id'] ) ) {
+                        $postmediaurl = $this->_block_wpfeed_get_wp_api_url( $post['id'], 'media' );
+                        $postmediaresponse = $curl->get( $postmediaurl );
+                        $postmediaarray = json_decode( $postmediaresponse, true );
+                        if ( !empty( $postmediaarray ) && is_array( $postmediaarray ) ) {
+                            $ret = $postmediaarray[0]['media_details']['sizes'][$thumbnailsize]['source_url'];
+                        }
+                    }
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * This function get post comments array from API
+     *
+     * @since  1.1.0
+     * @param  curl  $curl cURL object
+     * @param  array $post Post data array from API
+     * @access private
+     * @return array Handled comments array for the post from API
+     */
+    private function _block_wpfeed_get_post_comments( curl $curl, $post = array() ) {
+        $retarray = array();
+
+        $postcommentsurl = $this->_block_wpfeed_get_wp_api_url( $post['id'], 'comments' );
+        $postcommentsresponse = $curl->get( $postcommentsurl );
+        $postcommentsarray = json_decode( $postcommentsresponse, true );
+
+        switch ( $this->_api_version ) {
+            case 'v1':
+                foreach($postcommentsarray as $k => $postcomment):
+                    if ( $postcomment['status'] == 'approved' ) {
+                        $retarray[$k]['id']   = $postcomment['ID'];
+                        $retarray[$k]['text'] = $postcomment['content'];
+                    }
+                endforeach;
+                break;
+            case 'v2':
+                foreach($postcommentsarray as $k => $postcomment):
+                    if ( $postcomment['status'] == 'approved' ) {
+                        $retarray[$k]['id']   = $postcomment['id'];
+                        $retarray[$k]['text'] = $postcomment['content']['rendered'];
+                    }
+                endforeach;
+                break;
+        }
+
+        return $retarray;
+    }
+
+    /**
+     * This function get post categories array from API
+     *
+     * @since  1.1.0
+     * @param  curl  $curl cURL object
+     * @param  array $post Post data array from API
+     * @access private
+     * @return array
+     */
+    private function _block_wpfeed_get_post_categories( curl $curl, $post = array() ) {
+        $retarray = array();
+
+        switch ( $this->_api_version ) {
+            case 'v1':
+                if ( isset( $post['terms']['category'] ) && is_array( $post['terms']['category'] ) ) {
+                    foreach($post['terms']['category'] as $k => $postcategory):
+                        $retarray[$k]['id']          = $postcategory['ID'];
+                        $retarray[$k]['name']        = $postcategory['name'];
+                        $retarray[$k]['link']        = $postcategory['link'];
+                        $retarray[$k]['slug']        = $postcategory['slug'];
+                        $retarray[$k]['description'] = $postcategory['description'];
+                    endforeach;
+                }
+                break;
+            case 'v2':
+                $postcategoryurl = $this->_block_wpfeed_get_wp_api_url( $post['id'], 'categories' );
+                $postcategoryresponse = $curl->get( $postcategoryurl );
+                $postcategoryarray = json_decode( $postcategoryresponse, true );
+                if ( !empty( $postcategoryarray ) && is_array( $postcategoryarray ) ) {
+                    foreach($postcategoryarray as $k => $postcategory):
+                        $retarray[$k]['id']          = $postcategory['id'];
+                        $retarray[$k]['name']        = $postcategory['name'];
+                        $retarray[$k]['link']        = $postcategory['link'];
+                        $retarray[$k]['slug']        = $postcategory['slug'];
+                        $retarray[$k]['description'] = $postcategory['description'];
+                    endforeach;
+                }
+                break;
+        }
+
+        return $retarray;
     }
 
     /**
@@ -684,37 +857,12 @@ class block_wpfeed extends block_base{
 
                 if ( is_array( $retarray['posts'] ) && empty( $error ) ) {
                     foreach($retarray['posts'] as $k => $post):
+                        $post = $this->block_wpfeed_prepare_post_response( $post );
                         if ( !empty( $this->_config->block_wpfeed_thumbnail_show ) ) {
-                            $postmediaurl = $this->_block_wpfeed_get_wp_api_url( $post['id'], 'media' );
-                            $postmediaresponse = $curl->get( $postmediaurl );
-                            $postmediaarray = json_decode( $postmediaresponse, true );
-                            if ( !empty( $postmediaarray ) && is_array( $postmediaarray ) ) {
-                                $retarray['posts'][$k]['media'] = $postmediaarray[0];
-                            }
+                            $retarray['posts'][$k]['thumbnail_url'] = $this->_block_wpfeed_get_post_thumbnail( $curl, $post );
                         }
-
-                        $postcommentsurl = $this->_block_wpfeed_get_wp_api_url( $post['id'], 'comments' );
-                        $postcommentsresponse = $curl->get( $postcommentsurl );
-                        $postcommentsarray = json_decode( $postcommentsresponse, true );
-                        if ( !empty( $postcommentsarray ) && is_array( $postcommentsarray ) ) {
-                            foreach($postcommentsarray as $k2 => $postcomment):
-                                $retarray['posts'][$k]['wpf_comments'][$k2]['id']   = $postcomment['id'];
-                                $retarray['posts'][$k]['wpf_comments'][$k2]['text'] = $postcomment['content']['rendered'];
-                            endforeach;
-                        }
-
-                        $postcategoryurl = $this->_block_wpfeed_get_wp_api_url( $post['id'], 'categories' );
-                        $postcategoryresponse = $curl->get( $postcategoryurl );
-                        $postcategoryarray = json_decode( $postcategoryresponse, true );
-                        if ( !empty( $postcategoryarray ) && is_array( $postcategoryarray ) ) {
-                            foreach($postcategoryarray as $k3 => $postcategory):
-                                $retarray['posts'][$k]['wpf_cats'][$k3]['id']          = $postcategory['id'];
-                                $retarray['posts'][$k]['wpf_cats'][$k3]['name']        = $postcategory['name'];
-                                $retarray['posts'][$k]['wpf_cats'][$k3]['link']        = $postcategory['link'];
-                                $retarray['posts'][$k]['wpf_cats'][$k3]['slug']        = $postcategory['slug'];
-                                $retarray['posts'][$k]['wpf_cats'][$k3]['description'] = $postcategory['description'];
-                            endforeach;
-                        }
+                        $retarray['posts'][$k]['wpf_comments'] = $this->_block_wpfeed_get_post_comments( $curl, $post );
+                        $retarray['posts'][$k]['wpf_cats'] = $this->_block_wpfeed_get_post_categories( $curl, $post );
                     endforeach;
                 }
             }

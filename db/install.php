@@ -23,32 +23,28 @@
  */
 
 function xmldb_block_wpfeed_install() {
-    global $CFG;
-
-    $config = parse_ini_file( $CFG->dirroot . '/blocks/wpfeed/config.ini' );
-
     set_config( 'block_wpfeed_title',           get_string( 'block_wpfeed_default_title', 'block_wpfeed' ), 'block_wpfeed' );
-    set_config( 'block_wpfeed_wp_url',          '',                                'block_wpfeed' );
-    set_config( 'block_wpfeed_api_version',     $config['default_api_version'],    'block_wpfeed' );
-    set_config( 'block_wpfeed_prefix',          $config['default_api_prefix_v2'],  'block_wpfeed' );
-    set_config( 'block_wpfeed_post_type',       $config['default_post_type'],      'block_wpfeed' );
-    set_config( 'block_wpfeed_cache_interval',  $config['default_cache_interval'], 'block_wpfeed' );
-    set_config( 'block_wpfeed_session_store',   $config['default_session_store'],  'block_wpfeed' );
+    set_config( 'block_wpfeed_wp_url',          '',                              'block_wpfeed' );
+    set_config( 'block_wpfeed_api_version',     B_WPFEED_DEFAULT_API_VERSION,    'block_wpfeed' );
+    set_config( 'block_wpfeed_prefix',          B_WPFEED_DEFAULT_API_PREFIX_V2,  'block_wpfeed' );
+    set_config( 'block_wpfeed_post_type',       B_WPFEED_DEFAULT_POST_TYPE,      'block_wpfeed' );
+    set_config( 'block_wpfeed_cache_interval',  B_WPFEED_DEFAULT_CACHE_INTERVAL, 'block_wpfeed' );
+    set_config( 'block_wpfeed_session_store',   B_WPFEED_DEFAULT_SESSION_STORE,  'block_wpfeed' );
 
-    set_config( 'block_wpfeed_categories',      0,                                 'block_wpfeed' );
+    set_config( 'block_wpfeed_categories',      0,                               'block_wpfeed' );
 
-    set_config( 'block_wpfeed_thumbnail_show',  $config['default_thumbnail_show'], 'block_wpfeed' );
-    set_config( 'block_wpfeed_thumbnail_size',  $config['default_thumbnail_size'], 'block_wpfeed' );
-    set_config( 'block_wpfeed_thumbnail_width', 0,                                 'block_wpfeed' );
-    set_config( 'block_wpfeed_thumbnail_link',  $config['default_thumbnail_link'], 'block_wpfeed' );
+    set_config( 'block_wpfeed_thumbnail_show',  B_WPFEED_DEFAULT_THUMBNAIL_SHOW, 'block_wpfeed' );
+    set_config( 'block_wpfeed_thumbnail_size',  B_WPFEED_DEFAULT_THUMBNAIL_SIZE, 'block_wpfeed' );
+    set_config( 'block_wpfeed_thumbnail_width', 0,                               'block_wpfeed' );
+    set_config( 'block_wpfeed_thumbnail_link',  B_WPFEED_DEFAULT_THUMBNAIL_LINK, 'block_wpfeed' );
 
-    set_config( 'block_wpfeed_posts_limit',     $config['default_posts_limit'],    'block_wpfeed' );
-    set_config( 'block_wpfeed_post_date',       $config['default_post_date'],      'block_wpfeed' );
-    set_config( 'block_wpfeed_excerpt_length',  $config['default_excerpt_length'], 'block_wpfeed' );
+    set_config( 'block_wpfeed_posts_limit',     B_WPFEED_DEFAULT_POSTS_LIMIT,    'block_wpfeed' );
+    set_config( 'block_wpfeed_post_date',       B_WPFEED_DEFAULT_POST_DATE,      'block_wpfeed' );
+    set_config( 'block_wpfeed_excerpt_length',  B_WPFEED_DEFAULT_EXCERPT_LENGTH, 'block_wpfeed' );
 
-    set_config( 'block_wpfeed_skin',            $config['default_skin_name'],      'block_wpfeed' );
-    set_config( 'block_wpfeed_new_window',      $config['default_new_window'],     'block_wpfeed' );
+    set_config( 'block_wpfeed_skin',            B_WPFEED_DEFAULT_SKIN_NAME,      'block_wpfeed' );
+    set_config( 'block_wpfeed_new_window',      B_WPFEED_DEFAULT_NEW_WINDOW,     'block_wpfeed' );
 
-    set_config( 'block_wpfeed_dev_mode',        0,                                 'block_wpfeed' );
-    set_config( 'block_wpfeed_noindex',         0,                                 'block_wpfeed' );
+    set_config( 'block_wpfeed_dev_mode',        0,                               'block_wpfeed' );
+    set_config( 'block_wpfeed_noindex',         0,                               'block_wpfeed' );
 }

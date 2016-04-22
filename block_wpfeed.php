@@ -26,6 +26,25 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once( 'skins.class.php' );
 
+define( 'B_WPFEED_DEFAULT_API_VERSION', 'v2' );
+define( 'B_WPFEED_DEFAULT_API_PREFIX_V1', 'wp-json' );
+define( 'B_WPFEED_DEFAULT_API_PREFIX_V2', 'wp-json/wp/v2' );
+define( 'B_WPFEED_DEFAULT_POST_TYPE', 'posts' );
+define( 'B_WPFEED_DEFAULT_CACHE_INTERVAL', 1440 );
+define( 'B_WPFEED_DEFAULT_SESSION_STORE', 0 );
+define( 'B_WPFEED_DEFAULT_THUMBNAIL_SHOW', 0 );
+define( 'B_WPFEED_DEFAULT_THUMBNAIL_LINK', 1 );
+define( 'B_WPFEED_DEFAULT_POSTS_LIMIT', 5 );
+define( 'B_WPFEED_DEFAULT_POST_DATE', 'd.m.Y' );
+define( 'B_WPFEED_DEFAULT_EXCERPT_LENGTH', 100 );
+define( 'B_WPFEED_DEFAULT_SKIN_NAME', 'default' );
+define( 'B_WPFEED_DEFAULT_THUMBNAIL_SIZE', 'thumbnail' );
+define( 'B_WPFEED_DEFAULT_THUMBNAIL_WIDTH', 0 );
+define( 'B_WPFEED_DEFAULT_NEW_WINDOW', 1 );
+define( 'B_WPFEED_DEFAULT_BLOCK_TITLE', 'WPFeed' );
+define( 'B_WPFEED_EXTERNAL_SKINS_FOLDER', 'wpfeed_skins' );
+define( 'B_WPFEED_MIN_CACHE_TIME', 5 );
+
 class block_wpfeed extends block_base{
 
     /**
@@ -75,14 +94,6 @@ class block_wpfeed extends block_base{
      * @var    string
      */
     public $httppath;
-
-    /**
-     * config.ini data array
-     *
-     * @access public
-     * @var    array
-     */
-    public $staticconfig = array();
 
     /**
      * The object with plufin configs
@@ -203,22 +214,21 @@ class block_wpfeed extends block_base{
         $this->abspath        = $this->_cfg->dirroot . $this->location;
         $this->httppath       = $this->_cfg->wwwroot . $this->location;
 
-        $this->staticconfig   = $this->block_wpfeed_get_static_config();
         $this->_config        = get_config( 'block_wpfeed' );
         if ( !empty( $this->_config->block_wpfeed_api_version ) ) {
             $this->_api_version = $this->_config->block_wpfeed_api_version;
         } else {
-            $this->_api_version = $this->staticconfig['default_api_version'];
+            $this->_api_version = B_WPFEED_DEFAULT_API_VERSION;
         }
         if ( !empty( $this->_config->block_wpfeed_prefix ) ) {
             $this->_api_namespace = $this->_config->block_wpfeed_prefix;
         } else {
-            $this->_api_namespace = $this->staticconfig['default_api_prefix_v2'];
+            $this->_api_namespace = B_WPFEED_DEFAULT_API_PREFIX_V2;
         }
         $this->_post_type     = $this->_block_wpfeed_get_post_type();
 
         $this->skin           = $this->_block_wpfeed_get_skin();
-        $this->externalskinsfolder = $this->_cfg->dirroot . '/' . $this->staticconfig['external_skins_folder'];
+        $this->externalskinsfolder = $this->_cfg->dirroot . '/' . B_WPFEED_EXTERNAL_SKINS_FOLDER;
         $this->externalskins = $this->block_wpfeed_external_skins();
 
         $this->_filter        = $this->_block_wpfeed_get_filter();
@@ -227,7 +237,7 @@ class block_wpfeed extends block_base{
         if ( isset( $this->_config->block_wpfeed_title ) && !empty( $this->_config->block_wpfeed_title ) ) {
             $this->title = $this->_config->block_wpfeed_title;
         } else {
-            $this->title = $this->staticconfig['default_block_title'];
+            $this->title = B_WPFEED_DEFAULT_BLOCK_TITLE;
         }
     }
 
@@ -266,7 +276,7 @@ class block_wpfeed extends block_base{
      */
     public function block_wpfeed_get_cache_interval() {
         if ( !empty( $this->_config->block_wpfeed_cache_interval ) ) {
-            if ( $this->_config->block_wpfeed_cache_interval >= $this->staticconfig['min_cache_time'] ) {
+            if ( $this->_config->block_wpfeed_cache_interval >= B_WPFEED_MIN_CACHE_TIME ) {
                 return $this->_config->block_wpfeed_cache_interval;
             }
         }
@@ -286,7 +296,7 @@ class block_wpfeed extends block_base{
             return $this->_config->block_wpfeed_post_type;
         }
 
-        return $this->staticconfig['default_post_type'];
+        return B_WPFEED_DEFAULT_POST_TYPE;
     }
 
     /**
@@ -381,17 +391,6 @@ class block_wpfeed extends block_base{
     }
 
     /**
-     * Get static plugin config (defaults) from config.ini file
-     *
-     * @since  1.0.0
-     * @access public
-     * @return array Parsed config.ini array with static config data
-     */
-    public function block_wpfeed_get_static_config() {
-        return parse_ini_file( $this->abspath . '/config.ini' );
-    }
-
-    /**
      * Function prepare filter array for API request
      *
      * @since  1.0.0
@@ -402,7 +401,7 @@ class block_wpfeed extends block_base{
         if ( isset( $this->_config->block_wpfeed_posts_limit ) && $this->_config->block_wpfeed_posts_limit > 0 ) {
             $postslimitpre = intval( $this->_config->block_wpfeed_posts_limit );
         } else {
-            $postslimitpre = $this->staticconfig['default_posts_limit'];
+            $postslimitpre = B_WPFEED_DEFAULT_POSTS_LIMIT;
         }
         $postslimit = ( $postslimitpre > 0 ) ? $postslimitpre : 5;
         $retarray = array(
@@ -435,6 +434,23 @@ class block_wpfeed extends block_base{
     }
 
     public function has_config() {
+        return true;
+    }
+    
+    /**
+     * Allows the block to be added multiple times to a single page
+     * @return boolean
+     */
+    public function instance_allow_multiple() {
+        return true;
+    }
+    
+    /**
+     * allow instances to have their own configuration
+     *
+     * @return boolean
+     */
+    public function instance_allow_config() {
         return true;
     }
 
@@ -502,7 +518,7 @@ class block_wpfeed extends block_base{
             return $this->_config->block_wpfeed_skin;
         }
 
-        return $this->staticconfig['default_skin_name'];
+        return B_WPFEED_DEFAULT_SKIN_NAME;
     }
 
     /**

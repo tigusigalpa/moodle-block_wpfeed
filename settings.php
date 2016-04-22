@@ -19,7 +19,6 @@ defined( 'MOODLE_INTERNAL' ) || die;
 if ( $ADMIN->fulltree ) {
 
     $blockwpfeedinstance = block_wpfeed::get_instance();
-    $staticconfigobj = (object) $blockwpfeedinstance->staticconfig;
 
     $settings->add(
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_title',
@@ -38,33 +37,40 @@ if ( $ADMIN->fulltree ) {
             new admin_setting_configselect( 'block_wpfeed/block_wpfeed_api_version',
                     get_string( 'block_wpfeed_api_version', 'block_wpfeed' ),
             get_string( 'block_wpfeed_api_version_desc', 'block_wpfeed' ),
-            $blockwpfeedinstance->staticconfig['default_api_version'],
+            B_WPFEED_DEFAULT_API_VERSION,
             $blockwpfeedinstance::$blockwpfeedapiversions ) );
 
+    $a1 = new stdClass();
+    $a1->default_api_prefix_v1 = B_WPFEED_DEFAULT_API_PREFIX_V1;
+    $a1->default_api_prefix_v2 = B_WPFEED_DEFAULT_API_PREFIX_V2;
     $settings->add(
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_prefix',
                     get_string( 'block_wpfeed_settings_wp_api_prefix', 'block_wpfeed' ),
-            get_string( 'block_wpfeed_settings_wp_api_prefix_desc', 'block_wpfeed', $staticconfigobj ),
-            $blockwpfeedinstance->staticconfig['default_api_prefix_v2'] ) );
+            get_string( 'block_wpfeed_settings_wp_api_prefix_desc', 'block_wpfeed', $a1 ),
+            B_WPFEED_DEFAULT_API_PREFIX_V2 ) );
 
+    $a2 = new stdClass();
+    $a2->default_post_type = B_WPFEED_DEFAULT_POST_TYPE;
     $settings->add(
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_post_type',
                     get_string( 'block_wpfeed_settings_post_type', 'block_wpfeed' ),
-            get_string( 'block_wpfeed_settings_post_type_desc', 'block_wpfeed', $staticconfigobj ),
-            $blockwpfeedinstance->staticconfig['default_post_type'] ) );
+            get_string( 'block_wpfeed_settings_post_type_desc', 'block_wpfeed', $a2 ),
+            B_WPFEED_DEFAULT_POST_TYPE ) );
 
+    $a3 = new stdClass();
+    $a3->min_cache_time = B_WPFEED_MIN_CACHE_TIME;
     $settings->add(
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_cache_interval',
                     get_string( 'block_wpfeed_settings_cache_interval', 'block_wpfeed' ),
-            get_string( 'block_wpfeed_settings_cache_interval_desc', 'block_wpfeed', $staticconfigobj ),
-            $blockwpfeedinstance->staticconfig['default_cache_interval'],
+            get_string( 'block_wpfeed_settings_cache_interval_desc', 'block_wpfeed', $a3 ),
+            B_WPFEED_DEFAULT_CACHE_INTERVAL,
             PARAM_INT ) );
 
     $settings->add(
             new admin_setting_configcheckbox( 'block_wpfeed/block_wpfeed_session_store',
                     get_string( 'block_wpfeed_settings_session_store', 'block_wpfeed' ),
             get_string( 'block_wpfeed_settings_session_store_desc', 'block_wpfeed' ),
-            $blockwpfeedinstance->staticconfig['default_session_store'] ) );
+            B_WPFEED_DEFAULT_SESSION_STORE ) );
 
     $settings->add(
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_categories',
@@ -76,59 +82,59 @@ if ( $ADMIN->fulltree ) {
             new admin_setting_configcheckbox( 'block_wpfeed/block_wpfeed_thumbnail_show',
                     get_string( 'block_wpfeed_settings_thumbnail_show', 'block_wpfeed' ),
             '',
-            $blockwpfeedinstance->staticconfig['default_thumbnail_show'] ) );
+            B_WPFEED_DEFAULT_THUMBNAIL_SHOW ) );
 
     $settings->add(
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_thumbnail_size',
                     get_string( 'block_wpfeed_settings_thumbnail_size', 'block_wpfeed' ),
             get_string( 'block_wpfeed_settings_thumbnail_size_desc', 'block_wpfeed' ),
-            $blockwpfeedinstance->staticconfig['default_thumbnail_size'] ) );
+            B_WPFEED_DEFAULT_THUMBNAIL_SIZE ) );
 
     $settings->add(
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_thumbnail_width',
                     get_string( 'block_wpfeed_settings_thumbnail_width', 'block_wpfeed' ),
             get_string( 'block_wpfeed_settings_thumbnail_width_desc', 'block_wpfeed' ),
-            $blockwpfeedinstance->staticconfig['default_thumbnail_width'],
+            B_WPFEED_DEFAULT_THUMBNAIL_WIDTH,
             PARAM_INT ) );
 
     $settings->add(
             new admin_setting_configcheckbox( 'block_wpfeed/block_wpfeed_thumbnail_link',
                     get_string( 'block_wpfeed_settings_thumbnail_link', 'block_wpfeed' ),
             get_string( 'block_wpfeed_settings_thumbnail_link_desc', 'block_wpfeed' ),
-            $blockwpfeedinstance->staticconfig['default_thumbnail_link'] ) );
+            B_WPFEED_DEFAULT_THUMBNAIL_LINK ) );
 
     $settings->add(
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_posts_limit',
                     get_string( 'block_wpfeed_settings_posts_limit', 'block_wpfeed' ),
             get_string( 'block_wpfeed_settings_posts_limit_desc', 'block_wpfeed' ),
-            $blockwpfeedinstance->staticconfig['default_posts_limit'],
+            B_WPFEED_DEFAULT_POSTS_LIMIT,
             PARAM_INT ) );
 
     $settings->add(
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_post_date',
                     get_string( 'block_wpfeed_settings_post_date', 'block_wpfeed' ),
             get_string( 'block_wpfeed_settings_post_date_desc', 'block_wpfeed' ),
-            $blockwpfeedinstance->staticconfig['default_post_date'] ) );
+            B_WPFEED_DEFAULT_POST_DATE ) );
 
     $settings->add(
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_excerpt_length',
                     get_string( 'block_wpfeed_settings_excerpt_length', 'block_wpfeed' ),
             get_string( 'block_wpfeed_settings_excerpt_length_desc', 'block_wpfeed' ),
-            $blockwpfeedinstance->staticconfig['default_excerpt_length'],
+            B_WPFEED_DEFAULT_EXCERPT_LENGTH,
             PARAM_INT ) );
 
     $settings->add(
             new admin_setting_configselect( 'block_wpfeed/block_wpfeed_skin',
                     get_string( 'block_wpfeed_settings_skin', 'block_wpfeed' ),
             null,
-            $blockwpfeedinstance->staticconfig['default_skin_name'],
+            B_WPFEED_DEFAULT_SKIN_NAME,
             $blockwpfeedinstance->block_wpfeed_get_skins( true ) ) );
 
     $settings->add(
             new admin_setting_configcheckbox( 'block_wpfeed/block_wpfeed_new_window',
                     get_string( 'block_wpfeed_settings_new_window', 'block_wpfeed' ),
             '',
-            $blockwpfeedinstance->staticconfig['default_new_window'] ) );
+            B_WPFEED_DEFAULT_NEW_WINDOW ) );
 
     $settings->add(
             new admin_setting_configcheckbox( 'block_wpfeed/block_wpfeed_noindex',

@@ -171,6 +171,11 @@ If you need to use custom JS files in your skin, you can require the ones:
 You're welcome to make pull requests but against master branch. Thanks!
 
 ## Changelog
+#### Version 1.1.1 (2016042200)
+- `instance_allow_multiple` support added
+- `define` defaults instead `config.ini` parsing
+- pretty settings view
+
 #### Version 1.1.0 (2016032200)
 - Moodle Travis code requirements compliable (>90%)
 - WordPress API v1 support (thanks for [Dan Marsen](https://github.com/danmarsden) issue)

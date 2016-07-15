@@ -26,6 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once( 'skins.class.php' );
 
+define( 'B_WPFEED_DEFAULT_HIDE_HEADER', 0 );
 define( 'B_WPFEED_DEFAULT_API_VERSION', 'v2' );
 define( 'B_WPFEED_DEFAULT_API_PREFIX_V1', 'wp-json' );
 define( 'B_WPFEED_DEFAULT_API_PREFIX_V2', 'wp-json/wp/v2' );
@@ -436,22 +437,13 @@ class block_wpfeed extends block_base{
     public function has_config() {
         return true;
     }
-    
+
     /**
-     * Allows the block to be added multiple times to a single page
+     * Default return is false - header will be shown
      * @return boolean
      */
-    public function instance_allow_multiple() {
-        return true;
-    }
-    
-    /**
-     * allow instances to have their own configuration
-     *
-     * @return boolean
-     */
-    public function instance_allow_config() {
-        return true;
+    public function hide_header() {
+        return isset( $this->_config->block_wpfeed_hide_header ) ? intval( $this->_config->block_wpfeed_hide_header ) : B_WPFEED_DEFAULT_HIDE_HEADER;
     }
 
     public function get_content() {

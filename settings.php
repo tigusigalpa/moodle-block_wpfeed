@@ -27,6 +27,12 @@ if ( $ADMIN->fulltree ) {
             get_string( 'block_wpfeed_default_title', 'block_wpfeed' ) ) );
 
     $settings->add(
+            new admin_setting_configcheckbox( 'block_wpfeed/block_wpfeed_hide_header',
+                    get_string( 'block_wpfeed_settings_hide_header', 'block_wpfeed' ),
+            get_string( 'block_wpfeed_settings_hide_header_desc', 'block_wpfeed' ),
+            B_WPFEED_DEFAULT_HIDE_HEADER ) );
+
+    $settings->add(
             new admin_setting_configtext( 'block_wpfeed/block_wpfeed_wp_url',
                     get_string( 'block_wpfeed_settings_wp_url', 'block_wpfeed' ),
             get_string( 'block_wpfeed_settings_wp_url_desc', 'block_wpfeed' ),

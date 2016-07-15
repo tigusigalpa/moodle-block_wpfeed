@@ -25,6 +25,7 @@
 function xmldb_block_wpfeed_install() {
     set_config( 'block_wpfeed_title',           get_string( 'block_wpfeed_default_title', 'block_wpfeed' ), 'block_wpfeed' );
     set_config( 'block_wpfeed_wp_url',          '',                              'block_wpfeed' );
+    set_config( 'block_wpfeed_hide_header',     B_WPFEED_DEFAULT_HIDE_HEADER,    'block_wpfeed' );
     set_config( 'block_wpfeed_api_version',     B_WPFEED_DEFAULT_API_VERSION,    'block_wpfeed' );
     set_config( 'block_wpfeed_prefix',          B_WPFEED_DEFAULT_API_PREFIX_V2,  'block_wpfeed' );
     set_config( 'block_wpfeed_post_type',       B_WPFEED_DEFAULT_POST_TYPE,      'block_wpfeed' );

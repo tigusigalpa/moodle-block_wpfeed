@@ -45,6 +45,8 @@ $string['block_wpfeed_no_posts']                      = 'No posts in API respons
 
 /*SETTINGS STRINGS*/
 $string['block_wpfeed_settings_title']                = 'Block title';
+$string['block_wpfeed_settings_hide_header']          = 'Hide block header/title';
+$string['block_wpfeed_settings_hide_header_desc']     = 'If you want to remove block title, choose this option';
 $string['block_wpfeed_settings_wp_url']               = 'WordPress site URL';
 $string['block_wpfeed_settings_wp_url_desc']          = 'Your WordPress site URL address <strong>without slashes</strong>. Example: <em>http://mysite.com</em>';
 $string['block_wpfeed_api_version']                   = 'Your WordPress site API version';

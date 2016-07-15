@@ -45,6 +45,8 @@ $string['block_wpfeed_no_posts']                      = 'В ответе API н�
 
 /*SETTINGS STRINGS*/
 $string['block_wpfeed_settings_title']                = 'Заголовок блока';
+$string['block_wpfeed_settings_hide_header']          = 'Не показывать заголовок/шапку блока';
+$string['block_wpfeed_settings_hide_header_desc']     = 'Если Вы хотите скрыть заголовк блока, выбирете данную опцию';
 $string['block_wpfeed_settings_wp_url']               = 'Адрес WordPress-сайта';
 $string['block_wpfeed_settings_wp_url_desc']          = 'URL-адрес Вашего WordPress-сайта <strong>без слешей</strong>. Например: <em>http://mysite.ru</em>';
 $string['block_wpfeed_api_version']                   = 'Версия API вашего WordPress сайта';

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'block_comments', language 'ru'
+ * Strings for component 'block_wpfeed', language 'ru'
  *
  * @package   block_wpfeed
  * @copyright 2016 Igor Sazonov <sovletig@yandex.ru> {@link http://lms-service.org}
